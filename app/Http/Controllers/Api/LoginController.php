@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -38,10 +39,15 @@ class LoginController extends Controller
                 'message' => 'User login atau User password Anda salah'
             ], 401);
         }
+		
+		// Tampilkan waktu sebulan mendatang untuk masa expired token
+		$token_expired = Carbon::now()->addMonth()->format('Y-m-d');
+		
         return response()->json([
             'success' => true,
             'user'    => auth()->guard('api')->user(),    
-            'token'   => $token   
+            'token'   => $token,
+            'token_expired' => $token_expired
         ], 200);
     }
 }
