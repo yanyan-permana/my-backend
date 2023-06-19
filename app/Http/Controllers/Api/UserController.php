@@ -28,6 +28,7 @@ class UserController extends Controller
                 'created_at' => $row->created_at,
                 'updated_at' => $row->updated_at,
                 'kry_nama' => $row->karyawan->kry_nama,
+                'kry_jabatan' => $row->karyawan->kry_jabatan,
             ];
         }
 
