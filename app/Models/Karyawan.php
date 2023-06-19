@@ -17,4 +17,9 @@ class Karyawan extends Model
         'kry_bagian',
         'kry_jabatan',
     ];
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'kry_id');
+    }
 }

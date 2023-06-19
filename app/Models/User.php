@@ -70,4 +70,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->usr_password;
     }
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'kry_id');
+    }
 }
