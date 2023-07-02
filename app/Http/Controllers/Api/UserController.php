@@ -58,7 +58,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::where('usr_id', $id)->first();
+        $user = User::where('usr_id', $id)->with('karyawan')->first();
         if ($user) {
             return new UserResource(true, 'Data User Ditemukan!', $user);
         } else {
