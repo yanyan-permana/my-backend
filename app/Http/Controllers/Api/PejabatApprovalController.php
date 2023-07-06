@@ -12,7 +12,7 @@ class PejabatApprovalController extends Controller
 {
     public function index()
     {
-        $pejabatApproval = PejabatApproval::all();
+        $pejabatApproval = PejabatApproval::query()->with("jenisApproval")->get();
         return new PejabatApprovalResource(true, 'List Data Pejabat Approval', $pejabatApproval);
     }
 
@@ -43,7 +43,7 @@ class PejabatApprovalController extends Controller
 
     public function show($id)
     {
-        $pejabatApproval = PejabatApproval::where('pjbt_id', $id)->first();
+        $pejabatApproval = PejabatApproval::where('pjbt_id', $id)->with("jenisApproval")->first();
         if ($pejabatApproval) {
             return new PejabatApprovalResource(true, 'Data Pejabat Approval Ditemukan!', $pejabatApproval);
         } else {

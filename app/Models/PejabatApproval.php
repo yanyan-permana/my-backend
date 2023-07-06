@@ -18,4 +18,9 @@ class PejabatApproval extends Model
         'app_auth_password',
         'pjbt_status',
     ];
+
+    public function jenisApproval()
+    {
+        return $this->belongsTo(JenisApproval::class, 'app_id');
+    }
 }
