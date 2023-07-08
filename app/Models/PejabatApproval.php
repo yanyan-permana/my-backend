@@ -23,4 +23,9 @@ class PejabatApproval extends Model
     {
         return $this->belongsTo(JenisApproval::class, 'app_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'usr_id');
+    }
 }

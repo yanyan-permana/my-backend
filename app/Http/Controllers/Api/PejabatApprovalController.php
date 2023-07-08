@@ -12,7 +12,24 @@ class PejabatApprovalController extends Controller
 {
     public function index()
     {
-        $pejabatApproval = PejabatApproval::query()->with("jenisApproval")->get();
+        $pejabatApproval = PejabatApproval::with(['jenisApproval' => function ($query) {
+            $query->select('app_id', 'app_nama');
+        }, 'user' => function ($query) {
+            $query->select('usr_id', 'usr_login');
+        }])
+            ->select('app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
+            ->get()
+            ->map(function ($pejabatApproval) {
+                return [
+                    'app_id' => $pejabatApproval->app_id,
+                    'usr_id' => $pejabatApproval->usr_id,
+                    'app_auth_user' => $pejabatApproval->app_auth_user,
+                    'app_auth_password' => $pejabatApproval->app_auth_password,
+                    'pjbt_status' => $pejabatApproval->pjbt_status,
+                    'app_nama' => $pejabatApproval->jenisApproval->app_nama,
+                    'usr_login' => $pejabatApproval->user->usr_login,
+                ];
+            });
         return new PejabatApprovalResource(true, 'List Data Pejabat Approval', $pejabatApproval);
     }
 
@@ -43,9 +60,24 @@ class PejabatApprovalController extends Controller
 
     public function show($id)
     {
-        $pejabatApproval = PejabatApproval::where('pjbt_id', $id)->with("jenisApproval")->first();
+        $pejabatApproval = PejabatApproval::where('pjbt_id', $id)->with(['jenisApproval' => function ($query) {
+            $query->select('app_id', 'app_nama');
+        }, 'user' => function ($query) {
+            $query->select('usr_id', 'usr_login');
+        }])
+            ->select('app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
+            ->first();
         if ($pejabatApproval) {
-            return new PejabatApprovalResource(true, 'Data Pejabat Approval Ditemukan!', $pejabatApproval);
+            $result = [
+                'app_id' => $pejabatApproval->app_id,
+                'usr_id' => $pejabatApproval->usr_id,
+                'app_auth_user' => $pejabatApproval->app_auth_user,
+                'app_auth_password' => $pejabatApproval->app_auth_password,
+                'pjbt_status' => $pejabatApproval->pjbt_status,
+                'app_nama' => $pejabatApproval->jenisApproval->app_nama,
+                'usr_login' => $pejabatApproval->user->usr_login,
+            ];
+            return new PejabatApprovalResource(true, 'Data Pejabat Approval Ditemukan!', $result);
         } else {
             return new PejabatApprovalResource(false, 'Data Pejabat Approval Tidak Ditemukan!', null);
         }
