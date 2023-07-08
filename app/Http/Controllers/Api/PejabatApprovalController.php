@@ -17,7 +17,7 @@ class PejabatApprovalController extends Controller
         }, 'user' => function ($query) {
             $query->select('usr_id', 'usr_login');
         }])
-            ->select('app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
+            ->select('pjbt_id', 'app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
             ->get()
             ->map(function ($pejabatApproval) {
                 return [
@@ -65,7 +65,7 @@ class PejabatApprovalController extends Controller
         }, 'user' => function ($query) {
             $query->select('usr_id', 'usr_login');
         }])
-            ->select('app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
+            ->select('pjbt_id', 'app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
             ->first();
         if ($pejabatApproval) {
             $result = [
