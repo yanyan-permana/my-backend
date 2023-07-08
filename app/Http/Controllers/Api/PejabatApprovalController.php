@@ -12,12 +12,7 @@ class PejabatApprovalController extends Controller
 {
     public function index()
     {
-        $pejabatApproval = PejabatApproval::with(['jenisApproval' => function ($query) {
-            $query->select('app_id', 'app_nama');
-        }, 'user' => function ($query) {
-            $query->select('usr_id', 'usr_login');
-        }])
-            ->select('pjbt_id', 'app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
+        $pejabatApproval = PejabatApproval::with(['jenisApproval', 'user'])
             ->get()
             ->map(function ($pejabatApproval) {
                 return [
@@ -61,12 +56,7 @@ class PejabatApprovalController extends Controller
 
     public function show($id)
     {
-        $pejabatApproval = PejabatApproval::where('pjbt_id', $id)->with(['jenisApproval' => function ($query) {
-            $query->select('app_id', 'app_nama');
-        }, 'user' => function ($query) {
-            $query->select('usr_id', 'usr_login');
-        }])
-            ->select('pjbt_id', 'app_id', 'usr_id', 'app_auth_user', 'app_auth_password', 'pjbt_status')
+        $pejabatApproval = PejabatApproval::where('pjbt_id', $id)->with(['jenisApproval', 'user'])
             ->first();
         if ($pejabatApproval) {
             $result = [

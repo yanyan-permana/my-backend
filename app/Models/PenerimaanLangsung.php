@@ -19,4 +19,14 @@ class PenerimaanLangsung extends Model
         'tpl_nominal',
         'tpl_keterangan',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'usr_id');
+    }
+
+    public function jenisTransaksi()
+    {
+        return $this->belongsTo(JenisTransaksi::class, 'trans_jns');
+    }
 }
