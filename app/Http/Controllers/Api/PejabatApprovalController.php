@@ -21,6 +21,7 @@ class PejabatApprovalController extends Controller
             ->get()
             ->map(function ($pejabatApproval) {
                 return [
+                    'pjbt_id' => $pejabatApproval->pjbt_id,
                     'app_id' => $pejabatApproval->app_id,
                     'usr_id' => $pejabatApproval->usr_id,
                     'app_auth_user' => $pejabatApproval->app_auth_user,
@@ -69,6 +70,7 @@ class PejabatApprovalController extends Controller
             ->first();
         if ($pejabatApproval) {
             $result = [
+                'pjbt_id' => $pejabatApproval->pjbt_id,
                 'app_id' => $pejabatApproval->app_id,
                 'usr_id' => $pejabatApproval->usr_id,
                 'app_auth_user' => $pejabatApproval->app_auth_user,
