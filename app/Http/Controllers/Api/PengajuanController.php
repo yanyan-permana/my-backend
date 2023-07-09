@@ -12,11 +12,12 @@ class PengajuanController extends Controller
 {
     public function index()
     {
-        $pengajuan = Pengajuan::with("jenisTransaksi")->get()
+        $pengajuan = Pengajuan::with(['jenisTransaksi', 'karyawan'])->get()
             ->map(function ($pengajuan) {
                 return [
                     'aju_id' => $pengajuan->aju_id,
                     'kry_id' => $pengajuan->kry_id,
+                    'kry_nama' => $pengajuan->karyawan->kry_nama,
                     'trx_id' => $pengajuan->trx_id,
                     'trx_nama' => $pengajuan->jenisTransaksi->trx_nama,
                     'aju_nomor' => $pengajuan->aju_nomor,
@@ -58,11 +59,12 @@ class PengajuanController extends Controller
 
     public function show($id)
     {
-        $pengajuan = Pengajuan::where('aju_id', $id)->with('jenisTransaksi')->first();
+        $pengajuan = Pengajuan::where('aju_id', $id)->with(['jenisTransaksi', 'karyawan'])->first();
         if ($pengajuan) {
             $pengajuan = [
                 'aju_id' => $pengajuan->aju_id,
                 'kry_id' => $pengajuan->kry_id,
+                'kry_nama' => $pengajuan->karyawan->kry_nama,
                 'trx_id' => $pengajuan->trx_id,
                 'trx_nama' => $pengajuan->jenisTransaksi->trx_nama,
                 'aju_nomor' => $pengajuan->aju_nomor,

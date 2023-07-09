@@ -24,4 +24,9 @@ class Pengajuan extends Model
     {
         return $this->belongsTo(JenisTransaksi::class, 'trx_id');
     }
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'kry_id');
+    }
 }
