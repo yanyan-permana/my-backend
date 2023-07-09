@@ -19,4 +19,9 @@ class Pengajuan extends Model
         'aju_nominal',
         'aju_keterangan',
     ];
+
+    public function jenisTransaksi()
+    {
+        return $this->belongsTo(JenisTransaksi::class, 'trx_id');
+    }
 }

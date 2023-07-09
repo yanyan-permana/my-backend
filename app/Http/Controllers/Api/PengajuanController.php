@@ -12,7 +12,21 @@ class PengajuanController extends Controller
 {
     public function index()
     {
-        $pengajuan = Pengajuan::all();
+        $pengajuan = Pengajuan::with("jenisTransaksi")->get()
+            ->map(function ($pengajuan) {
+                return [
+                    'aju_id' => $pengajuan->aju_id,
+                    'kry_id' => $pengajuan->kry_id,
+                    'trx_id' => $pengajuan->trx_id,
+                    'trx_nama' => $pengajuan->jenisTransaksi->trx_nama,
+                    'aju_nomor' => $pengajuan->aju_nomor,
+                    'aju_tanggal' => $pengajuan->aju_tanggal,
+                    'aju_nominal' => $pengajuan->aju_nominal,
+                    'aju_keterangan' => $pengajuan->aju_keterangan,
+                    'created_at' => $pengajuan->created_at,
+                    'updated_at' => $pengajuan->updated_at,
+                ];
+            });
         return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
     }
 
@@ -44,8 +58,20 @@ class PengajuanController extends Controller
 
     public function show($id)
     {
-        $pengajuan = Pengajuan::where('aju_id', $id)->first();
+        $pengajuan = Pengajuan::where('aju_id', $id)->with('jenisTransaksi')->first();
         if ($pengajuan) {
+            $pengajuan = [
+                'aju_id' => $pengajuan->aju_id,
+                'kry_id' => $pengajuan->kry_id,
+                'trx_id' => $pengajuan->trx_id,
+                'trx_nama' => $pengajuan->jenisTransaksi->trx_nama,
+                'aju_nomor' => $pengajuan->aju_nomor,
+                'aju_tanggal' => $pengajuan->aju_tanggal,
+                'aju_nominal' => $pengajuan->aju_nominal,
+                'aju_keterangan' => $pengajuan->aju_keterangan,
+                'created_at' => $pengajuan->created_at,
+                'updated_at' => $pengajuan->updated_at,
+            ];
             return new PengajuanResource(true, 'Data Pengajuan Ditemukan!', $pengajuan);
         } else {
             return new PengajuanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
