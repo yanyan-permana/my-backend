@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('kry_id'); 
             $table->foreign('kry_id')->references('kry_id')->on('m_karyawan');
             $table->string('usr_login');
-            // $table->string('email')->unique();
+            $table->string('usr_email')->nullable();
+            $table->enum('usr_hak_akses', ['karyawan', 'administrator', 'keuangan', 'dikreksi', 'verifikasi'])->nullable();
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('usr_password');
             $table->rememberToken();

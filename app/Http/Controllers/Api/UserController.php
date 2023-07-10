@@ -41,6 +41,8 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'kry_id' => 'required',
             'usr_login' => 'required|unique:m_user',
+            'usr_email' => 'required',
+            'usr_hak_akses' => 'required',
             'usr_password' => 'required',
         ]);
         // jika validasi gagal
@@ -51,6 +53,8 @@ class UserController extends Controller
         $user = User::create([
             'kry_id' => $request->kry_id,
             'usr_login' => $request->usr_login,
+            'usr_email' => $request->usr_email,
+            'usr_hak_akses' => $request->usr_hak_akses,
             'usr_password' => Hash::make($request->usr_password),
         ]);
         return new UserResource(true, 'Data User Berhasil Ditambahkan!', $user);
@@ -73,12 +77,14 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
                 'usr_login' => 'required',
+                'usr_email' => 'required',
                 'usr_password' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
                 'usr_login' => 'required|unique:m_user',
+                'usr_hak_akses' => 'required',
                 'usr_password' => 'required',
             ]);
         }
@@ -89,6 +95,8 @@ class UserController extends Controller
         $user->update([
             'kry_id' => $request->kry_id,
             'usr_login' => $request->usr_login,
+            'usr_email' => $request->usr_email,
+            'usr_hak_akses' => $request->usr_hak_akses,
             'usr_password' => Hash::make($request->usr_password),
         ]);
         return new UserResource(true, 'Data User Berhasil Diubah!', $user);
