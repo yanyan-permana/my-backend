@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\KaryawanResource;
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -84,8 +85,13 @@ class KaryawanController extends Controller
     {
         $karyawan = Karyawan::where('kry_id', $id)->first();
         if ($karyawan) {
-            $karyawan->delete();
-            return new KaryawanResource(true, 'Data Karyawan Berhasil Dihapus!', null);
+            $isUsed = User::where('kry_id', $id)->exists();
+            if ($isUsed) {
+                return new KaryawanResource(false, 'Karyawan tidak dapat dihapus karena telah digunakan oleh pengguna!', null);
+            } else {
+                $karyawan->delete();
+                return new KaryawanResource(true, 'Data Karyawan Berhasil Dihapus!', null);
+            }
         } else {
             return new KaryawanResource(false, 'Data Karyawan Tidak Ditemukan!', null);
         }

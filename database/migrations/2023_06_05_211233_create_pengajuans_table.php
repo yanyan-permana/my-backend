@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('t_pengajuan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kry_id'); 
+            $table->unsignedBigInteger('kry_id');
             $table->foreign('kry_id')->references('kry_id')->on('m_karyawan');
-            $table->unsignedBigInteger('trx_id'); 
+            $table->unsignedBigInteger('trx_id');
             $table->foreign('trx_id')->references('trx_id')->on('m_jenis_transaksi');
             $table->string('aju_nomor');
             $table->string('aju_tanggal');
-            $table->integer('aju_nominal');
+            $table->double('aju_nominal')->default(0.00);
             $table->text('aju_keterangan')->nullable();
             $table->timestamps();
         });

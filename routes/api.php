@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PenerimaanLangsungController;
 use App\Http\Controllers\Api\PengajuanController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\RealisasiPengajuanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,5 +42,6 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/pejabat-approval', PejabatApprovalController::class);
     Route::apiResource('/pengajuan', PengajuanController::class);
     Route::apiResource('/penerimaan-langsung', PenerimaanLangsungController::class);
+    Route::apiResource('/realisasi-pengajuan', RealisasiPengajuanController::class);
 });
 Route::post('/logout', LogoutController::class)->name('logout');

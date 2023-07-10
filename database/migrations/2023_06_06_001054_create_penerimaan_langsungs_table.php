@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('trans_jns');
             $table->string('tpl_nomor');
             $table->string('tpl_tanggal');
-            $table->integer('tpl_nominal');
+            $table->double('tpl_nominal')->default(0.00);
             $table->text('tpl_keterangan')->nullable();
             $table->timestamps();
         });
