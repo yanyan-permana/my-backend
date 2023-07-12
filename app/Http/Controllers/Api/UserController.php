@@ -24,6 +24,8 @@ class UserController extends Controller
                 'usr_id' => $row->usr_id,
                 'kry_id' => $row->karyawan->kry_id,
                 'usr_login' => $row->usr_login,
+                'usr_email' => $row->usr_email,
+                'usr_hak_akses' => $row->usr_hak_akses,
                 'usr_password' => $row->usr_password,
                 'created_at' => $row->created_at,
                 'updated_at' => $row->updated_at,
