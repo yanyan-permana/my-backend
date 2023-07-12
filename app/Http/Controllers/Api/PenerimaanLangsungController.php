@@ -86,7 +86,7 @@ class PenerimaanLangsungController extends Controller
         $validator = Validator::make($request->all(), [
             'usr_id' => 'required',
             'trans_jns' => 'required',
-            'tpl_nomor' => 'required|exist:App\Models\PenerimaanLangsung,tpl_nomor',
+            'tpl_nomor' => 'required|exists:App\Models\PenerimaanLangsung,tpl_nomor',
             'tpl_tanggal' => 'required',
             'tpl_nominal' => 'required',
         ]);

@@ -86,7 +86,7 @@ class PengajuanController extends Controller
         $validator = Validator::make($request->all(), [
             'kry_id' => 'required',
             'trx_id' => 'required',
-            'aju_nomor' => 'required|exist:App\Models\Pengajuan,aju_nomor',
+            'aju_nomor' => 'required|exists:App\Models\Pengajuan,aju_nomor',
             'aju_tanggal' => 'required',
             'aju_nominal' => 'required',
         ]);
