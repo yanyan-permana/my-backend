@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_approval_pengajuan', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('aju_app_id')->primary();
             $table->integer('aju_id');
             $table->integer('aju_app_ver_jbt_id');
             $table->string('aju_app_ver_tanggal');

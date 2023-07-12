@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_bukti', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('bkt_id')->primary();
             $table->integer('trans_id');
             $table->integer('trans_jns');
             $table->string('bkt_file_nama');

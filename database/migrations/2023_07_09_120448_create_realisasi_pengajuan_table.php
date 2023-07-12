@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_realisasi_pengajuan', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('real_id')->primary();
             $table->integer("aju_app_id");
             $table->string("real_nomor");
             $table->string("real_tanggal");

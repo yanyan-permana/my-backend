@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_pertanggung_jawaban', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('tgjwb_id')->primary();
             $table->integer('real_id');
             $table->integer('trans_jns');
             $table->string('tgjwb_nomor');

@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('m_pejabat_approval', function (Blueprint $table) {
-            $table->renameColumn('id', 'pjbt_id');
-        });
+        // Schema::table('m_pejabat_approval', function (Blueprint $table) {
+        //     $table->renameColumn('id', 'pjbt_id');
+        // });
     }
 
     /**
