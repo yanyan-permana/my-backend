@@ -96,4 +96,14 @@ class KaryawanController extends Controller
             return new KaryawanResource(false, 'Data Karyawan Tidak Ditemukan!', null);
         }
     }
+
+    public function getTotalKaryawan()
+    {
+        $result = Karyawan::count();
+        if ($result) {
+            return new KaryawanResource(true, 'Total Karyawan!', null);
+        } else {
+            return new KaryawanResource(false, 'Tidak ada karyawan!', null);
+        }
+    }
 }

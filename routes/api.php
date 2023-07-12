@@ -36,6 +36,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('/karyawan', KaryawanController::class);
+    Route::get('/total-karyawan', [KaryawanController::class, 'getTotalKaryawan']);
     Route::apiResource('/user', UserController::class);
     Route::apiResource('/jenis-approval', JenisApprovalController::class);
     Route::apiResource('/jenis-transaksi', JenisTransaksiController::class);
