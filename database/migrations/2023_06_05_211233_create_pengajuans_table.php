@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_pengajuan', function (Blueprint $table) {
-            $table->unsignedBigInteger('aju_id')->primary();
+            $table->id('aju_id');
             $table->unsignedBigInteger('kry_id');
             $table->foreign('kry_id')->references('kry_id')->on('m_karyawan');
             $table->unsignedBigInteger('trx_id');

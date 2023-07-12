@@ -29,4 +29,21 @@ class Pengajuan extends Model
     {
         return $this->belongsTo(Karyawan::class, 'kry_id');
     }
+
+    public static function generateAJUNumber()
+    {
+        $latestNumber = static::max('aju_nomor');
+
+        if ($latestNumber) {
+            // Ambil angka dari nomor urut terakhir
+            $number = intval(substr($latestNumber, 3)) + 1;
+        } else {
+            // Jika tidak ada nomor urut sebelumnya, mulai dari 1
+            $number = 1;
+        }
+
+        $tplNumber = 'AJU' . $number;
+
+        return $tplNumber;
+    }
 }

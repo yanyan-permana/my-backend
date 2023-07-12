@@ -37,7 +37,7 @@ class PengajuanController extends Controller
         $validator = Validator::make($request->all(), [
             'kry_id' => 'required',
             'trx_id' => 'required',
-            'aju_nomor' => 'required',
+            'aju_nomor' => 'required|unique:App\Models\Pengajuan,aju_nomor',
             'aju_tanggal' => 'required',
             'aju_nominal' => 'required',
         ]);
@@ -86,7 +86,7 @@ class PengajuanController extends Controller
         $validator = Validator::make($request->all(), [
             'kry_id' => 'required',
             'trx_id' => 'required',
-            'aju_nomor' => 'required',
+            'aju_nomor' => 'required|exist:App\Models\Pengajuan,aju_nomor',
             'aju_tanggal' => 'required',
             'aju_nominal' => 'required',
         ]);
@@ -113,6 +113,16 @@ class PengajuanController extends Controller
             return new PengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
             return new PengajuanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
+        }
+    }
+
+    public function getNomor()
+    {
+        $result = Pengajuan::generateAJUNumber();
+        if ($result) {
+            return new PengajuanResource(true, 'AJU Nomor Ditemukan!', $result);
+        } else {
+            return new PengajuanResource(false, 'AJU Nomor Tidak Ditemukan!', null);
         }
     }
 }

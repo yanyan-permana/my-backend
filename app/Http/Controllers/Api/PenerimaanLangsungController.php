@@ -37,7 +37,7 @@ class PenerimaanLangsungController extends Controller
         $validator = Validator::make($request->all(), [
             'usr_id' => 'required',
             'trans_jns' => 'required',
-            'tpl_nomor' => 'required',
+            'tpl_nomor' => 'required|unique:App\Models\PenerimaanLangsung,tpl_nomor',
             'tpl_tanggal' => 'required',
             'tpl_nominal' => 'required',
         ]);
@@ -86,7 +86,7 @@ class PenerimaanLangsungController extends Controller
         $validator = Validator::make($request->all(), [
             'usr_id' => 'required',
             'trans_jns' => 'required',
-            'tpl_nomor' => 'required',
+            'tpl_nomor' => 'required|exist:App\Models\PenerimaanLangsung,tpl_nomor',
             'tpl_tanggal' => 'required',
             'tpl_nominal' => 'required',
         ]);
@@ -113,6 +113,16 @@ class PenerimaanLangsungController extends Controller
             return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Dihapus!', null);
         } else {
             return new PenerimaanLangsungResource(false, 'Data Penerimaan Langsung Tidak Ditemukan!', null);
+        }
+    }
+
+    public function getNomor()
+    {
+        $result = PenerimaanLangsung::generateTplNumber();
+        if ($result) {
+            return new PenerimaanLangsungResource(true, 'TPL Nomor Ditemukan!', $result);
+        } else {
+            return new PenerimaanLangsungResource(false, 'TPL Nomor Tidak Ditemukan!', null);
         }
     }
 }

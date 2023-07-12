@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('m_karyawan', function (Blueprint $table) {
-            $table->unsignedBigInteger('kry_id')->primary();
+            $table->id('kry_id');
             $table->string('kry_nik')->unique();
             $table->string('kry_nama');
             $table->string('kry_bagian');

@@ -29,4 +29,21 @@ class PenerimaanLangsung extends Model
     {
         return $this->belongsTo(JenisTransaksi::class, 'trans_jns');
     }
+
+    public static function generateTplNumber()
+    {
+        $latestNumber = static::max('tpl_nomor');
+
+        if ($latestNumber) {
+            // Ambil angka dari nomor urut terakhir
+            $number = intval(substr($latestNumber, 3)) + 1;
+        } else {
+            // Jika tidak ada nomor urut sebelumnya, mulai dari 1
+            $number = 1;
+        }
+
+        $tplNumber = 'TPL' . $number;
+
+        return $tplNumber;
+    }
 }
