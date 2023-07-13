@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApprovalPengajuanController;
 use App\Http\Controllers\Api\JenisApprovalController;
 use App\Http\Controllers\Api\JenisTransaksiController;
 use App\Http\Controllers\Api\KaryawanController;
@@ -46,5 +47,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/penerimaan-langsung', PenerimaanLangsungController::class);
     Route::get('/get-nomortpl', [PenerimaanLangsungController::class, 'getNomor']);
     Route::apiResource('/realisasi-pengajuan', RealisasiPengajuanController::class);
+    Route::get('/show-verifikasi', [ApprovalPengajuanController::class, 'getPengajuanVerifikasi']);
+    Route::get('/show-keuangan', [ApprovalPengajuanController::class, 'getPengajuanKeuangan']);
+    Route::get('/show-direksi', [ApprovalPengajuanController::class, 'getPengajuanDireksi']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');

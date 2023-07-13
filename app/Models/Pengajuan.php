@@ -46,4 +46,9 @@ class Pengajuan extends Model
 
         return $tplNumber;
     }
+
+    public function approval()
+    {
+        return $this->hasOne(ApprovalPengajuan::class, 'aju_id');
+    }
 }

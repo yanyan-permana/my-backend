@@ -6,6 +6,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ApprovalPengajuanResource extends JsonResource
 {
+    public $status;
+    public $message;
+
+    public function __construct($status, $message, $resource)
+    {
+        parent::__construct($resource);
+
+        $this->status  = $status;
+        $this->message = $message;
+    }
     /**
      * Transform the resource into an array.
      *
