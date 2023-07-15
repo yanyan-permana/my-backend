@@ -61,7 +61,7 @@ class ApprovalPengajuanController extends Controller
         $minNom = $jenisApproval->app_min_nom;
         $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
         $dataPengajuan->where('aju_nominal', '>=', $minNom);
-   
+
         if ($statusApprove === '') {
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
@@ -221,7 +221,12 @@ class ApprovalPengajuanController extends Controller
 
             if ($jenisApproval) {
                 $approval = ApprovalPengajuan::where('aju_id', $ajuId)
+                    ->whereNotNull('aju_app_ver_status')
                     ->firstOrNew(['aju_id' => $ajuId]);
+
+                if ($approval->aju_app_ver_status === null) {
+                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di approve oleh verifikasi', $approval);
+                }
 
                 if ($approval->aju_app_keu_status === 'disetujui' || $approval->aju_app_keu_status === 'ditolak') {
                     return new ApprovalPengajuanResource(false, 'Pengajuan sudah disetujui atau ditolak sebelumnya', $approval);
@@ -285,7 +290,13 @@ class ApprovalPengajuanController extends Controller
 
             if ($jenisApproval) {
                 $approval = ApprovalPengajuan::where('aju_id', $ajuId)
+                    ->whereNotNull('aju_app_ver_status')
+                    ->whereNotNull('aju_app_keu_status')
                     ->firstOrNew(['aju_id' => $ajuId]);
+
+                if ($approval->aju_app_ver_status === null && $approval->aju_app_keu_status) {
+                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di approve oleh verifikasi', $approval);
+                }
 
                 if ($approval->aju_app_dir_status === 'disetujui' || $approval->aju_app_dir_status === 'ditolak') {
                     return new ApprovalPengajuanResource(false, 'Pengajuan sudah disetujui atau ditolak sebelumnya', $approval);
