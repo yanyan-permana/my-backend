@@ -28,7 +28,7 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi'])
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
             ->whereDoesntHave('approval', function ($query) {
                 $query->whereNull('aju_app_ver_status')
                     ->WhereNull('aju_app_keu_status')
@@ -57,7 +57,7 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi'])
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
             ->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
                     ->WhereNull('aju_app_keu_status')
@@ -82,7 +82,7 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi'])
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
             ->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
                     ->WhereNotNull('aju_app_keu_status')
