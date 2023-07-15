@@ -26,7 +26,7 @@ class ApprovalPengajuanController extends Controller
 
     public function getPengajuanVerifikasi(Request $request)
     {
-        $statusApprove = $request->input('status_approve');
+        $statusApprove = $request->input('status_approve', '');
 
         $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
             ->whereDoesntHave('approval', function ($query) {
@@ -55,7 +55,7 @@ class ApprovalPengajuanController extends Controller
 
     public function getPengajuanKeuangan(Request $request)
     {
-        $statusApprove = $request->input('status_approve');
+        $statusApprove = $request->input('status_approve', '');
 
         $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
             ->whereDoesntHave('approval', function ($query) {
@@ -80,7 +80,7 @@ class ApprovalPengajuanController extends Controller
 
     public function getPengajuanDireksi(Request $request)
     {
-        $statusApprove = $request->input('status_approve');
+        $statusApprove = $request->input('status_approve', '');
 
         $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
             ->whereDoesntHave('approval', function ($query) {
