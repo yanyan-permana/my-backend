@@ -57,7 +57,11 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve', '');
 
+        $jenisApproval = JenisApproval::where('app_jenis', 'app_keuangan')->first();
+        $minNom = $jenisApproval->app_min_nom;
         $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
+        $dataPengajuan->where('aju_nominal', '>=', $minNom);
+   
         if ($statusApprove === '') {
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
@@ -86,7 +90,11 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve', '');
 
+        $jenisApproval = JenisApproval::where('app_jenis', 'app_direksi')->first();
+        $minNom = $jenisApproval->app_min_nom;
+
         $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
+        $dataPengajuan->where('aju_nominal', '>=', $minNom);
         if ($statusApprove === '') {
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
@@ -104,6 +112,7 @@ class ApprovalPengajuanController extends Controller
         }
 
         $dataPengajuan = $dataPengajuan->get();
+
         if ($dataPengajuan->count() > 0) {
             return new ApprovalPengajuanResource(true, 'List Pengajuan', $dataPengajuan);
         } else {
@@ -237,7 +246,7 @@ class ApprovalPengajuanController extends Controller
         } else {
             return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai', $pejabatApp);
         }
-        return new ApprovalPengajuanResource(false, 'Tidak ada jenis approval Keuangan yang sesuai', $pengajuan);
+        return new ApprovalPengajuanResource(false, 'Tidak Perlu Approve Keuangan', $pengajuan);
     }
 
     public function approveDireksi(Request $request, $ajuId)
@@ -295,6 +304,6 @@ class ApprovalPengajuanController extends Controller
         } else {
             return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai', $pejabatApp);
         }
-        return new ApprovalPengajuanResource(false, 'Tidak ada jenis approval Keuangan yang sesuai', $pengajuan);
+        return new ApprovalPengajuanResource(false, 'Tidak Perlu Approve Direksi', $pengajuan);
     }
 }
