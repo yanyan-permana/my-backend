@@ -34,7 +34,16 @@ class ApprovalPengajuanController extends Controller
                 $query->whereNotNull('aju_app_ver_status')
                     ->WhereNull('aju_app_keu_status')
                     ->WhereNull('aju_app_dir_status');
-            });
+            })
+                ->where(function ($query) {
+                    $query->whereDoesntHave('approval', function ($subquery) {
+                        $subquery->where('is_complete', 'ditolak')
+                            ->orWhere('is_complete', 'selesai');
+                    });
+                })
+                ->orWhere(function ($query) {
+                    $query->whereDoesntHave('approval');
+                });
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_ver_status', '=', 'disetujui');
@@ -70,9 +79,12 @@ class ApprovalPengajuanController extends Controller
             })
                 ->where(function ($query) {
                     $query->whereDoesntHave('approval', function ($subquery) {
-                        $subquery->where('is_complete', '=', 'ditolak');
-                    })
-                        ->orWhereDoesntHave('approval');
+                        $subquery->where('is_complete', 'ditolak')
+                            ->orWhere('is_complete', 'selesai');
+                    });
+                })
+                ->orWhere(function ($query) {
+                    $query->whereDoesntHave('approval');
                 });
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
@@ -109,9 +121,12 @@ class ApprovalPengajuanController extends Controller
             })
                 ->where(function ($query) {
                     $query->whereDoesntHave('approval', function ($subquery) {
-                        $subquery->where('is_complete', '=', 'ditolak');
-                    })
-                        ->orWhereDoesntHave('approval');
+                        $subquery->where('is_complete', 'ditolak')
+                            ->orWhere('is_complete', 'selesai');
+                    });
+                })
+                ->orWhere(function ($query) {
+                    $query->whereDoesntHave('approval');
                 });
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
