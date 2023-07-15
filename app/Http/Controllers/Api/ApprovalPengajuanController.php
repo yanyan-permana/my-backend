@@ -28,14 +28,14 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve', '');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
-            ->whereDoesntHave('approval', function ($query) {
-                $query->whereNull('aju_app_ver_status')
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
+        if ($statusApprove === '') {
+            $dataPengajuan->whereDoesntHave('approval', function ($query) {
+                $query->whereNotNull('aju_app_ver_status')
                     ->WhereNull('aju_app_keu_status')
                     ->WhereNull('aju_app_dir_status');
             });
-
-        if ($statusApprove === 'disetujui') {
+        } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_ver_status', '=', 'disetujui');
             });
@@ -57,14 +57,14 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve', '');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
-            ->whereDoesntHave('approval', function ($query) {
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
+        if ($statusApprove === '') {
+            $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
-                    ->WhereNull('aju_app_keu_status')
+                    ->whereNotNull('aju_app_keu_status')
                     ->WhereNull('aju_app_dir_status');
             });
-
-        if ($statusApprove === 'disetujui') {
+        } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_keu_status', '=', 'disetujui');
             });
@@ -86,14 +86,14 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve', '');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
-            ->whereDoesntHave('approval', function ($query) {
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
+        if ($statusApprove === '') {
+            $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
-                    ->WhereNotNull('aju_app_keu_status')
-                    ->WhereNull('aju_app_dir_status');
+                    ->whereNotNull('aju_app_keu_status')
+                    ->whereNotNull('aju_app_dir_status');
             });
-
-        if ($statusApprove === 'disetujui') {
+        } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_dir_status', '=', 'disetujui');
             });
@@ -118,7 +118,7 @@ class ApprovalPengajuanController extends Controller
             'app_auth_user' => 'required',
             'app_auth_password' => 'required',
             'status_approve' => 'required',
-            'keterangan' => 'required',
+            'keterangan' => 'nullable',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -131,7 +131,7 @@ class ApprovalPengajuanController extends Controller
         $appauthuser = $request->input('app_auth_user');
         $appauthpassword = $request->input('app_auth_password');
         $approveStatus = $request->input('status_approve');
-        $approveKeterangan = $request->input('keterangan');
+        $approveKeterangan = $request->input('keterangan', '');
 
         $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser])
             ->with(['jenisApproval' => function ($query) {
@@ -183,7 +183,7 @@ class ApprovalPengajuanController extends Controller
             'app_auth_user' => 'required',
             'app_auth_password' => 'required',
             'status_approve' => 'required',
-            'keterangan' => 'required',
+            'keterangan' => 'nullable',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -196,7 +196,7 @@ class ApprovalPengajuanController extends Controller
         $appauthuser = $request->input('app_auth_user');
         $appauthpassword = $request->input('app_auth_password');
         $approveStatus = $request->input('status_approve');
-        $approveKeterangan = $request->input('keterangan');
+        $approveKeterangan = $request->input('keterangan', '');
 
         $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser])
             ->with(['jenisApproval' => function ($query) {
@@ -214,7 +214,7 @@ class ApprovalPengajuanController extends Controller
                 $approval = ApprovalPengajuan::where('aju_id', $ajuId)
                     ->firstOrNew(['aju_id' => $ajuId]);
 
-                if ($approval->aju_app_ver_status === 'disetujui' || $approval->aju_app_ver_status === 'ditolak') {
+                if ($approval->aju_app_keu_status === 'disetujui' || $approval->aju_app_keu_status === 'ditolak') {
                     return new ApprovalPengajuanResource(false, 'Pengajuan sudah disetujui atau ditolak sebelumnya', $approval);
                 }
 
@@ -247,7 +247,7 @@ class ApprovalPengajuanController extends Controller
             'app_auth_user' => 'required',
             'app_auth_password' => 'required',
             'status_approve' => 'required',
-            'keterangan' => 'required',
+            'keterangan' => 'nullable',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -260,7 +260,7 @@ class ApprovalPengajuanController extends Controller
         $appauthuser = $request->input('app_auth_user');
         $appauthpassword = $request->input('app_auth_password');
         $approveStatus = $request->input('status_approve');
-        $approveKeterangan = $request->input('keterangan');
+        $approveKeterangan = $request->input('keterangan', '');
 
         $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser])
             ->with(['jenisApproval' => function ($query) {
@@ -278,7 +278,7 @@ class ApprovalPengajuanController extends Controller
                 $approval = ApprovalPengajuan::where('aju_id', $ajuId)
                     ->firstOrNew(['aju_id' => $ajuId]);
 
-                if ($approval->aju_app_ver_status === 'disetujui' || $approval->aju_app_ver_status === 'ditolak') {
+                if ($approval->aju_app_dir_status === 'disetujui' || $approval->aju_app_dir_status === 'ditolak') {
                     return new ApprovalPengajuanResource(false, 'Pengajuan sudah disetujui atau ditolak sebelumnya', $approval);
                 }
 
