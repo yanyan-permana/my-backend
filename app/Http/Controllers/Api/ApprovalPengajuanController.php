@@ -75,7 +75,11 @@ class ApprovalPengajuanController extends Controller
         }
 
         $dataPengajuan = $dataPengajuan->get();
-        return new ApprovalPengajuanResource(true, 'List Data Pengajuan', $dataPengajuan);
+        if ($dataPengajuan) {
+            return new ApprovalPengajuanResource(true, 'List Data Pengajuan', $dataPengajuan);
+        } else {
+            return new ApprovalPengajuanResource(false, 'List Data Pengajuan', $dataPengajuan);
+        }
     }
 
     public function getPengajuanDireksi(Request $request)
