@@ -16,7 +16,7 @@ class ApprovalPengajuanController extends Controller
 {
     public function getPengajuanById($ajuId)
     {
-        $dataPengajuan = Pengajuan::where('aju_id', $ajuId)->with('approval')->first();
+        $dataPengajuan = Pengajuan::where('aju_id', $ajuId)->with(['approval', 'jenisTransaksi', 'karyawan'])->first();
         if ($dataPengajuan) {
             return new ApprovalPengajuanResource(true, 'Data Pengajuan', $dataPengajuan);
         } else {
@@ -138,7 +138,6 @@ class ApprovalPengajuanController extends Controller
                 $query->where('app_jenis', 'app_verifikasi');
             }])
             ->first();
-
 
         if ($pejabatApp->jenisApproval && $pejabatApp->app_auth_password === $appauthpassword) {
             $jenisApproval = JenisApproval::where('app_jenis', 'app_verifikasi')
