@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('m_pejabat_approval', function (Blueprint $table) {
-            $table->id('pjbt_id');
+            $table->bigIncrements('pjbt_id');
             $table->unsignedBigInteger('app_id'); 
             $table->foreign('app_id')->references('app_id')->on('m_jenis_approval');
             $table->unsignedBigInteger('usr_id'); 

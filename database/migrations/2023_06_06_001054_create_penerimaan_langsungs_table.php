@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_penerimaan_langsung', function (Blueprint $table) {
-            $table->id('tpl_id');
+            $table->bigIncrements('tpl_id');
             $table->unsignedBigInteger('usr_id');
             $table->foreign('usr_id')->references('usr_id')->on('m_user');
             $table->string('trans_jns');

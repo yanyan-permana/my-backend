@@ -50,5 +50,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/show-verifikasi', [ApprovalPengajuanController::class, 'getPengajuanVerifikasi']);
     Route::get('/show-keuangan', [ApprovalPengajuanController::class, 'getPengajuanKeuangan']);
     Route::get('/show-direksi', [ApprovalPengajuanController::class, 'getPengajuanDireksi']);
+    Route::post('/app-verifikasi/{ajuid}', [ApprovalPengajuanController::class, 'approveVerifikasi']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');

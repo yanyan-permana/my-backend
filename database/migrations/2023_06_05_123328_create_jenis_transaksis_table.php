@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('m_jenis_transaksi', function (Blueprint $table) {
-            $table->id('trx_id');
+            $table->bigIncrements('trx_id');
             $table->string('trx_nama');
             $table->string('trx_kategori');
             $table->timestamps();

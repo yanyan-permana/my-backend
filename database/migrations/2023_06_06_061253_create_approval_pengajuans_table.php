@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('t_approval_pengajuan', function (Blueprint $table) {
-            $table->id('aju_app_id');
+            $table->bigIncrements('aju_app_id');
             $table->integer('aju_id');
             $table->integer('aju_app_ver_jbt_id');
             $table->string('aju_app_ver_tanggal');
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('aju_app_dir_tanggal');
             $table->string('aju_app_dir_status');
             $table->text('aju_app_dir_keterangan')->nullable();
+            $table->string('is_complete')->nullable();
             $table->timestamps();
         });
     }

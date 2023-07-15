@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('m_jenis_approval', function (Blueprint $table) {
-            $table->id('app_id');
+            $table->bigIncrements('app_id');
             $table->string('app_jenis');
             $table->string('app_nama');
             $table->integer('app_min_nom');
