@@ -49,6 +49,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/realisasi-pengajuan', RealisasiPengajuanController::class);
     Route::get('/show-verifikasi', [ApprovalPengajuanController::class, 'getPengajuanVerifikasi']);
     Route::get('/show-keuangan', [ApprovalPengajuanController::class, 'getPengajuanKeuangan']);
+    Route::get('/show-app-pengajuan/{ajuid}', [ApprovalPengajuanController::class, 'getPengajuanById']);
     Route::get('/show-direksi', [ApprovalPengajuanController::class, 'getPengajuanDireksi']);
     Route::post('/app-verifikasi/{ajuid}', [ApprovalPengajuanController::class, 'approveVerifikasi']);
 });
