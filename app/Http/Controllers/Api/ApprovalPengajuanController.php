@@ -66,9 +66,14 @@ class ApprovalPengajuanController extends Controller
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
                     ->whereNotNull('aju_app_keu_status')
-                    ->WhereNull('aju_app_dir_status')
-                    ->where('aju_app_ver_status', '<>', 'ditolak');
-            });
+                    ->WhereNull('aju_app_dir_status');
+            })
+                ->where(function ($query) {
+                    $query->whereDoesntHave('approval', function ($subquery) {
+                        $subquery->where('is_complete', '=', 'ditolak');
+                    })
+                        ->orWhereDoesntHave('approval');
+                });
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_keu_status', '=', 'disetujui');
@@ -100,10 +105,14 @@ class ApprovalPengajuanController extends Controller
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
                     ->whereNotNull('aju_app_keu_status')
-                    ->whereNotNull('aju_app_dir_status')
-                    ->where('aju_app_ver_status', '<>', 'ditolak')
-                    ->where('aju_app_keu_status', '<>', 'ditolak');
-            });
+                    ->whereNotNull('aju_app_dir_status');
+            })
+                ->where(function ($query) {
+                    $query->whereDoesntHave('approval', function ($subquery) {
+                        $subquery->where('is_complete', '=', 'ditolak');
+                    })
+                        ->orWhereDoesntHave('approval');
+                });
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_dir_status', '=', 'disetujui');
@@ -172,7 +181,9 @@ class ApprovalPengajuanController extends Controller
                 $approval->aju_app_ver_keterangan = $approveKeterangan;
                 $approveStatus === 'ditolak' && $approval->is_complete = 'ditolak';
                 $approval->save();
-
+                if ($approveStatus === 'ditolak') {
+                    return new ApprovalPengajuanResource(true, 'Approval verifikasi ditolak', $approval);
+                }
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
                     return new ApprovalPengajuanResource(true, 'Approval verifikasi berhasil, persetujuan dari Keuangan diperlukan', $approval);
                 } else {
@@ -244,6 +255,10 @@ class ApprovalPengajuanController extends Controller
                 $approveStatus === 'ditolak' && $approval->is_complete = 'ditolak';
                 $approval->save();
 
+                if ($approveStatus === 'ditolak') {
+                    return new ApprovalPengajuanResource(true, 'Approval verifikasi ditolak', $approval);
+                }
+
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
                     return new ApprovalPengajuanResource(true, 'Approval Keuangan berhasil, persetujuan dari Direksi diperlukan', $approval);
                 } else {
@@ -314,6 +329,10 @@ class ApprovalPengajuanController extends Controller
                 $approval->aju_app_keu_keterangan = $approveKeterangan;
                 $approval->is_complete = $approveStatus === 'disetujui' ? "selesai" : "ditolak";
                 $approval->save();
+
+                if ($approveStatus === 'ditolak') {
+                    return new ApprovalPengajuanResource(true, 'Approval verifikasi ditolak', $approval);
+                }
 
                 return new ApprovalPengajuanResource(true, 'Approval Selesai', $approval);
             }
