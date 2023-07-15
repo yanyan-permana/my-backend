@@ -46,7 +46,7 @@ class ApprovalPengajuanController extends Controller
         }
 
         $dataPengajuan = $dataPengajuan->get();
-        if ($dataPengajuan) {
+        if ($dataPengajuan->count() > 0) {
             return new ApprovalPengajuanResource(true, 'List Pengajuan', $dataPengajuan);
         } else {
             return new ApprovalPengajuanResource(false, 'Pengajuan tidak ditemukan!', $dataPengajuan);
@@ -75,10 +75,10 @@ class ApprovalPengajuanController extends Controller
         }
 
         $dataPengajuan = $dataPengajuan->get();
-        if ($dataPengajuan) {
-            return new ApprovalPengajuanResource(true, 'List Data Pengajuan', $dataPengajuan);
+        if ($dataPengajuan->count() > 0) {
+            return new ApprovalPengajuanResource(true, 'List Pengajuan', $dataPengajuan);
         } else {
-            return new ApprovalPengajuanResource(false, 'List Data Pengajuan', $dataPengajuan);
+            return new ApprovalPengajuanResource(false, 'Pengajuan tidak ditemukan!', $dataPengajuan);
         }
     }
 
@@ -104,7 +104,11 @@ class ApprovalPengajuanController extends Controller
         }
 
         $dataPengajuan = $dataPengajuan->get();
-        return new ApprovalPengajuanResource(true, 'List Data Pengajuan', $dataPengajuan);
+        if ($dataPengajuan->count() > 0) {
+            return new ApprovalPengajuanResource(true, 'List Pengajuan', $dataPengajuan);
+        } else {
+            return new ApprovalPengajuanResource(false, 'Pengajuan tidak ditemukan!', $dataPengajuan);
+        }
     }
 
     public function approveVerifikasi(Request $request, $ajuId)
