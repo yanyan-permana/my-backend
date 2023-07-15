@@ -139,7 +139,7 @@ class ApprovalPengajuanController extends Controller
             }])
             ->first();
 
-        if ($pejabatApp->jenisApproval && $pejabatApp->app_auth_password === $appauthpassword) {
+        if ($pejabatApp && $pejabatApp->app_auth_password === $appauthpassword) {
             $jenisApproval = JenisApproval::where('app_jenis', 'app_verifikasi')
                 ->where('app_min_nom', '<=', $nominalPengajuan)
                 ->orderBy('app_max_nom', 'desc')
@@ -204,7 +204,7 @@ class ApprovalPengajuanController extends Controller
             }])
             ->first();
 
-        if ($pejabatApp->jenisApproval && $pejabatApp->app_auth_password === $appauthpassword) {
+        if ($pejabatApp && $pejabatApp->app_auth_password === $appauthpassword) {
             $jenisApproval = JenisApproval::where('app_jenis', 'app_keuangan')
                 ->where('app_min_nom', '<=', $nominalPengajuan)
                 ->orderBy('app_max_nom', 'desc')
@@ -268,7 +268,7 @@ class ApprovalPengajuanController extends Controller
             }])
             ->first();
 
-        if ($pejabatApp->jenisApproval && $pejabatApp->app_auth_password === $appauthpassword) {
+        if ($pejabatApp && $pejabatApp->app_auth_password === $appauthpassword) {
             $jenisApproval = JenisApproval::where('app_jenis', 'app_direksi')
                 ->where('app_min_nom', '<=', $nominalPengajuan)
                 ->orderBy('app_max_nom', 'desc')
