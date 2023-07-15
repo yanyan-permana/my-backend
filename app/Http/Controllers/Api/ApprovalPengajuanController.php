@@ -66,7 +66,8 @@ class ApprovalPengajuanController extends Controller
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
                     ->whereNotNull('aju_app_keu_status')
-                    ->WhereNull('aju_app_dir_status');
+                    ->WhereNull('aju_app_dir_status')
+                    ->where('aju_app_ver_status', '<>', 'ditolak');
             });
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
@@ -99,7 +100,9 @@ class ApprovalPengajuanController extends Controller
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
                     ->whereNotNull('aju_app_keu_status')
-                    ->whereNotNull('aju_app_dir_status');
+                    ->whereNotNull('aju_app_dir_status')
+                    ->where('aju_app_ver_status', '<>', 'ditolak')
+                    ->where('aju_app_keu_status', '<>', 'ditolak');
             });
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
@@ -167,12 +170,13 @@ class ApprovalPengajuanController extends Controller
                 $approval->aju_app_ver_jbt_id = $pejabatApp->pjbt_id;
                 $approval->aju_app_ver_status = $approveStatus;
                 $approval->aju_app_ver_keterangan = $approveKeterangan;
+                $approveStatus === 'ditolak' && $approval->is_complete = 'ditolak';
                 $approval->save();
 
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
                     return new ApprovalPengajuanResource(true, 'Approval verifikasi berhasil, persetujuan dari Keuangan diperlukan', $approval);
                 } else {
-                    $approval->is_complete = "selesai";
+                    $approval->is_complete = $approveStatus === 'disetujui' ? "selesai" : "ditolak";
                     $approval->save();
 
                     return new ApprovalPengajuanResource(true, 'Approval Selesai', $approval);
@@ -237,12 +241,13 @@ class ApprovalPengajuanController extends Controller
                 $approval->aju_app_keu_jbt_id = $pejabatApp->pjbt_id;
                 $approval->aju_app_keu_status = $approveStatus;
                 $approval->aju_app_keu_keterangan = $approveKeterangan;
+                $approveStatus === 'ditolak' && $approval->is_complete = 'ditolak';
                 $approval->save();
 
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
                     return new ApprovalPengajuanResource(true, 'Approval Keuangan berhasil, persetujuan dari Direksi diperlukan', $approval);
                 } else {
-                    $approval->is_complete = "selesai";
+                    $approval->is_complete = $approveStatus === 'disetujui' ? "selesai" : "ditolak";
                     $approval->save();
 
                     return new ApprovalPengajuanResource(true, 'Approval Selesai', $approval);
@@ -294,8 +299,8 @@ class ApprovalPengajuanController extends Controller
                     ->whereNotNull('aju_app_keu_status')
                     ->firstOrNew(['aju_id' => $ajuId]);
 
-                if ($approval->aju_app_ver_status === null && $approval->aju_app_keu_status) {
-                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di approve oleh verifikasi', $approval);
+                if ($approval->aju_app_ver_status === null && $approval->aju_app_keu_status === null) {
+                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di approve oleh Keuangan', $approval);
                 }
 
                 if ($approval->aju_app_dir_status === 'disetujui' || $approval->aju_app_dir_status === 'ditolak') {
@@ -307,7 +312,7 @@ class ApprovalPengajuanController extends Controller
                 $approval->aju_app_keu_jbt_id = $pejabatApp->pjbt_id;
                 $approval->aju_app_keu_status = $approveStatus;
                 $approval->aju_app_keu_keterangan = $approveKeterangan;
-                $approval->is_complete = "selesai";
+                $approval->is_complete = $approveStatus === 'disetujui' ? "selesai" : "ditolak";
                 $approval->save();
 
                 return new ApprovalPengajuanResource(true, 'Approval Selesai', $approval);
