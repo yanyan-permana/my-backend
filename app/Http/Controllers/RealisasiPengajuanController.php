@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RealisasiPengajuanResource;
+use App\Models\ApprovalPengajuan;
 use App\Models\RealisasiPengajuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -86,6 +87,27 @@ class RealisasiPengajuanController extends Controller
             return new RealisasiPengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
             return new RealisasiPengajuanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
+        }
+    }
+
+
+    public function loadPengajuan()
+    {
+        $result = ApprovalPengajuan::where('is_complete', 'selesai')->with('pengajuan')->get();
+        if ($result) {
+            return new RealisasiPengajuanResource(true, 'Realisasi Ditemukan!', $result);
+        } else {
+            return new RealisasiPengajuanResource(false, 'Realisasi Tidak Ditemukan!', null);
+        }
+    }
+
+    public function getNomor()
+    {
+        $result = RealisasiPengajuan::generateAJUNumber();
+        if ($result) {
+            return new RealisasiPengajuanResource(true, 'Realisasi Nomor Ditemukan!', $result);
+        } else {
+            return new RealisasiPengajuanResource(false, 'Realisasi Nomor Tidak Ditemukan!', null);
         }
     }
 }

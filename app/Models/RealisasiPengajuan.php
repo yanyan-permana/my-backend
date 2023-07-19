@@ -18,4 +18,21 @@ class RealisasiPengajuan extends Model
         'real_keterangan',
         'real_pjbt_id',
     ];
+
+    public static function generateRealNumber()
+    {
+        $latestNumber = static::max('real_nomor');
+
+        if ($latestNumber) {
+            // Ambil angka dari nomor urut terakhir
+            $number = intval(substr($latestNumber, 3)) + 1;
+        } else {
+            // Jika tidak ada nomor urut sebelumnya, mulai dari 1
+            $number = 1;
+        }
+
+        $tplNumber = 'REAL' . $number;
+
+        return $tplNumber;
+    }
 }

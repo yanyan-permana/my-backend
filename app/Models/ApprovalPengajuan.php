@@ -24,6 +24,7 @@ class ApprovalPengajuan extends Model
         'aju_app_dir_tanggal',
         'aju_app_dir_status',
         'aju_app_dir_keterangan',
+        'is_complete',
     ];
 
     public function pengajuan()
