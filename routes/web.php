@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Halaman Login
-Route::get('/login', [LoginController::class, 'index']);
+Route::get('/login', [LoginController::class, 'index'])->middleware('guest');
 Route::post('/login', [LoginController::class, 'login']);
+Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
+// Halaman Admin
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('check.user.login');
