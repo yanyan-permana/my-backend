@@ -7,3 +7,7 @@
 7. Pengajuan (F)
 8. Penerimaan Langsung (F)
 9. Approval Pengajuan (P)
+
+----------------------------------------------------------------
+> ✅ halaman web - crud menu jenis approval (Belum dipush)
+> halaman web - jenis transksi baru dibuatkan controller nya saja

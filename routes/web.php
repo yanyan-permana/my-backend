@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JenisApprovalController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,8 @@ Route::get('/login', [LoginController::class, 'index'])->middleware('guest');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
 
-// Halaman Admin
+// Halaman Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('check.user.login');
+
+// Halaman Jenis Approval
+Route::resource('jenis-approval', JenisApprovalController::class);
