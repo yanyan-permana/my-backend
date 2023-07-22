@@ -27,12 +27,22 @@
             <i class="fas fa-fw fa-check-circle"></i>
             <span>Jenis Approval</span></a>
     </li>
+
     <hr class="sidebar-divider">
 
     <li class="nav-item {{ Request::is('karyawan*') ? 'active' : '' }}">
         <a class="nav-link" href="/karyawan">
             <i class="fas fa-fw fa-users"></i>
             <span>Karyawan</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <li class="nav-item {{ Request::is('user*') ? 'active' : '' }}">
+        <a class="nav-link" href="/user">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Pengguna</span></a>
     </li>
 
     <!-- Divider -->

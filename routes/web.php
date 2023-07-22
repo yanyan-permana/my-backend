@@ -4,6 +4,7 @@ use App\Http\Controllers\web\DashboardController;
 use App\Http\Controllers\web\JenisApprovalController;
 use App\Http\Controllers\web\LoginController;
 use App\Http\Controllers\web\KaryawanController;
+use App\Http\Controllers\web\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +29,5 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('che
 Route::resource('jenis-approval', JenisApprovalController::class);
 // Halaman Karyawan
 Route::resource('karyawan', KaryawanController::class);
+// Halaman Pengguna
+Route::resource('user', UserController::class);
