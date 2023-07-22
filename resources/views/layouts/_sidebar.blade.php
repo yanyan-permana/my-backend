@@ -57,6 +57,24 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    <li class="nav-item {{ Request::is('jenis-transaksi-penerimaan*') || Request::is('jenis-transaksi-pengeluaran*') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="false" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-credit-card"></i>
+            <span>Jenis Transaksi</span>
+        </a>
+        <div id="collapseTwo" class="collapse {{ Request::is('jenis-transaksi-penerimaan*') || Request::is('jenis-transaksi-pengeluaran*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {{ Request::is('jenis-transaksi-penerimaan*') ? 'active' : '' }}" href="/jenis-transaksi-penerimaan">Penerimaan</a>
+                <a class="collapse-item {{ Request::is('jenis-transaksi-pengeluaran*') ? 'active' : '' }}" href="/jenis-transaksi-pengeluaran">Pengeluaran</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
 </ul>
 <!-- End of Sidebar -->
 

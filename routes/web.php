@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\web\DashboardController;
 use App\Http\Controllers\web\JenisApprovalController;
+use App\Http\Controllers\web\JenisTransaksiPenerimaanController;
+use App\Http\Controllers\web\JenisTransaksiPengeluaranController;
 use App\Http\Controllers\web\LoginController;
 use App\Http\Controllers\web\KaryawanController;
 use App\Http\Controllers\web\PejabatApprovalController;
@@ -34,3 +36,7 @@ Route::resource('karyawan', KaryawanController::class);
 Route::resource('user', UserController::class);
 // Halaman Pejabat Approval
 Route::resource('pejabat-approval', PejabatApprovalController::class);
+// Halaman Penerimaan
+Route::resource('jenis-transaksi-penerimaan', JenisTransaksiPenerimaanController::class);
+// Halaman Pengeluaran
+Route::resource('jenis-transaksi-pengeluaran', JenisTransaksiPengeluaranController::class);
