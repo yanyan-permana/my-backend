@@ -78,9 +78,9 @@ class KaryawanController extends Controller
 
         if ($karyawan) {
             $karyawan->delete();
-            return redirect('/karyawan')->with('success', 'Data Jenis Approval Berhasil Dihapus!');
+            return redirect('/karyawan')->with('success', 'Data Karyawan Berhasil Dihapus!');
         } else {
-            return redirect('/karyawan')->with('error', 'Data Jenis Approval Tidak Ditemukan!');
+            return redirect('/karyawan')->with('error', 'Data Karyawan Tidak Ditemukan!');
         }
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\web\DashboardController;
 use App\Http\Controllers\web\JenisApprovalController;
 use App\Http\Controllers\web\LoginController;
 use App\Http\Controllers\web\KaryawanController;
+use App\Http\Controllers\web\PejabatApprovalController;
 use App\Http\Controllers\web\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,5 @@ Route::resource('jenis-approval', JenisApprovalController::class);
 Route::resource('karyawan', KaryawanController::class);
 // Halaman Pengguna
 Route::resource('user', UserController::class);
+// Halaman Pejabat Approval
+Route::resource('pejabat-approval', PejabatApprovalController::class);

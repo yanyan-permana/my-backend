@@ -48,6 +48,15 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    <li class="nav-item {{ Request::is('pejabat-approval*') ? 'active' : '' }}">
+        <a class="nav-link" href="/pejabat-approval">
+            <i class="fas fa-fw fa-check"></i>
+            <span>Pejabat Approval</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
 </ul>
 <!-- End of Sidebar -->
 
