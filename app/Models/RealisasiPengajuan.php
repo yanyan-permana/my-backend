@@ -35,4 +35,14 @@ class RealisasiPengajuan extends Model
 
         return $tplNumber;
     }
+
+    public function pertanggungJawaban()
+    {
+        return $this->hasOne(PertanggungJawaban::class, 'real_id');
+    }
+
+    public function approval()
+    {
+        return $this->hasOne(ApprovalPengajuan::class, 'aju_app_id', 'aju_app_id');
+    }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\PejabatApprovalController;
 use App\Http\Controllers\Api\PenerimaanLangsungController;
 use App\Http\Controllers\Api\PengajuanController;
+use App\Http\Controllers\Api\PertanggungJawabanController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RealisasiPengajuanController;
@@ -48,6 +49,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/get-nomortpl', [PenerimaanLangsungController::class, 'getNomor']);
     Route::apiResource('/realisasi-pengajuan', RealisasiPengajuanController::class);
     Route::get('/get-nomorrpl', [RealisasiPengajuanController::class, 'getNomor']);
+    Route::apiResource('/pertanggung-jawaban', PertanggungJawabanController::class);
+    Route::get('/get-nomortgjwb', [PertanggungJawabanController::class, 'getNomor']);
     Route::get('/show-verifikasi', [ApprovalPengajuanController::class, 'getPengajuanVerifikasi']);
     Route::get('/show-keuangan', [ApprovalPengajuanController::class, 'getPengajuanKeuangan']);
     Route::get('/show-direksi', [ApprovalPengajuanController::class, 'getPengajuanDireksi']);
@@ -56,5 +59,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/app-keuangan/{ajuid}', [ApprovalPengajuanController::class, 'approveKeuangan']);
     Route::post('/app-direksi/{ajuid}', [ApprovalPengajuanController::class, 'approveDireksi']);
     Route::get('/load-pengajuan', [RealisasiPengajuanController::class, 'loadPengajuan']);
+    Route::get('/load-realisasi', [PertanggungJawabanController::class, 'loadRealisasi']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');

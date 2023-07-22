@@ -169,7 +169,7 @@ class ApprovalPengajuanController extends Controller
         $approveStatus = $request->input('status_approve');
         $approveKeterangan = $request->input('keterangan', '');
 
-        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser])
+        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 'active'])
             ->with(['jenisApproval' => function ($query) {
                 $query->where('app_jenis', 'app_verifikasi');
             }])
@@ -209,7 +209,7 @@ class ApprovalPengajuanController extends Controller
                 }
             }
         } else {
-            return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai', $pejabatApp);
+            return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai / Tidak Aktif', $pejabatApp);
         }
 
         return new ApprovalPengajuanResource(false, 'Tidak ada jenis approval Verifikasi yang sesuai', $pengajuan);
@@ -237,7 +237,7 @@ class ApprovalPengajuanController extends Controller
         $approveStatus = $request->input('status_approve');
         $approveKeterangan = $request->input('keterangan', '');
 
-        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser])
+        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 'active'])
             ->with(['jenisApproval' => function ($query) {
                 $query->where('app_jenis', 'app_keuangan');
             }])
@@ -284,7 +284,7 @@ class ApprovalPengajuanController extends Controller
                 }
             }
         } else {
-            return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai', $pejabatApp);
+            return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai / Tidak Aktif', $pejabatApp);
         }
         return new ApprovalPengajuanResource(false, 'Tidak Perlu Approve Keuangan', $pengajuan);
     }
@@ -311,7 +311,7 @@ class ApprovalPengajuanController extends Controller
         $approveStatus = $request->input('status_approve');
         $approveKeterangan = $request->input('keterangan', '');
 
-        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser])
+        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 'active'])
             ->with(['jenisApproval' => function ($query) {
                 $query->where('app_jenis', 'app_direksi');
             }])
@@ -352,7 +352,7 @@ class ApprovalPengajuanController extends Controller
                 return new ApprovalPengajuanResource(true, 'Approval Selesai', $approval);
             }
         } else {
-            return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai', $pejabatApp);
+            return new ApprovalPengajuanResource(false, 'User atau password Approval tidak Sesuai / Tidak Aktif', $pejabatApp);
         }
         return new ApprovalPengajuanResource(false, 'Tidak Perlu Approve Direksi', $pengajuan);
     }

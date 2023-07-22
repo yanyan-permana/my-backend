@@ -14,7 +14,24 @@ class RealisasiPengajuanController extends Controller
 {
     public function index()
     {
-        $realisasi = RealisasiPengajuan::all();
+        $realisasi = RealisasiPengajuan::with(['approval.pengajuan.karyawan', 'approval.pengajuan.jenisTransaksi'])->get()
+            ->map(function ($realisasi) {
+                return [
+                    'real_id' => $realisasi->real_id,
+                    'aju_app_id' => $realisasi->aju_app_id,
+                    'real_nomor' => $realisasi->real_nomor,
+                    'real_tanggal' => $realisasi->real_tanggal,
+                    'real_nominal' => $realisasi->real_nominal,
+                    'real_keterangan' => $realisasi->real_keterangan,
+                    'real_pjbt_id' => $realisasi->real_pjbt_id,
+                    'aju_nomor' => $realisasi->approval->pengajuan->aju_nomor,
+                    'aju_nominal' => $realisasi->approval->pengajuan->aju_nominal,
+                    'kry_nama' => $realisasi->approval->pengajuan->karyawan->kry_nama,
+                    'trx_nama' => $realisasi->approval->pengajuan->jenisTransaksi->trx_nama,
+                    'created_at' => $realisasi->created_at,
+                    'updated_at' => $realisasi->updated_at,
+                ];
+            });
         return new RealisasiPengajuanResource(true, 'List Data Realisasi', $realisasi);
     }
 
@@ -47,8 +64,23 @@ class RealisasiPengajuanController extends Controller
 
     public function show($id)
     {
-        $realisasi = RealisasiPengajuan::where('real_id', $id)->first();
+        $realisasi = RealisasiPengajuan::where('real_id', $id)->with(['approval.pengajuan.karyawan', 'approval.pengajuan.jenisTransaksi'])->first();
         if ($realisasi) {
+            $realisasi = [
+                'real_id' => $realisasi->real_id,
+                'aju_app_id' => $realisasi->aju_app_id,
+                'real_nomor' => $realisasi->real_nomor,
+                'real_tanggal' => $realisasi->real_tanggal,
+                'real_nominal' => $realisasi->real_nominal,
+                'real_keterangan' => $realisasi->real_keterangan,
+                'real_pjbt_id' => $realisasi->real_pjbt_id,
+                'aju_nomor' => $realisasi->approval->pengajuan->aju_nomor,
+                'aju_nominal' => $realisasi->approval->pengajuan->aju_nominal,
+                'kry_nama' => $realisasi->approval->pengajuan->karyawan->kry_nama,
+                'trx_nama' => $realisasi->approval->pengajuan->jenisTransaksi->trx_nama,
+                'created_at' => $realisasi->created_at,
+                'updated_at' => $realisasi->updated_at,
+            ];
             return new RealisasiPengajuanResource(true, 'Data realisasi Ditemukan!', $realisasi);
         } else {
             return new RealisasiPengajuanResource(false, 'Data realisasi Tidak Ditemukan!', null);
@@ -83,12 +115,17 @@ class RealisasiPengajuanController extends Controller
 
     public function destroy($id)
     {
-        $realisasi = RealisasiPengajuan::where('real_id', $id)->first();
-        if ($realisasi) {
-            $realisasi->delete();
-            return new RealisasiPengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
+        $existingRealisasiPengajuan = RealisasiPengajuan::has('pertanggungJawaban')->get();
+        if (!$existingRealisasiPengajuan) {
+            $realisasi = RealisasiPengajuan::where('real_id', $id)->first();
+            if ($realisasi) {
+                $realisasi->delete();
+                return new RealisasiPengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
+            } else {
+                return new RealisasiPengajuanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
+            }
         } else {
-            return new RealisasiPengajuanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
+            return new RealisasiPengajuanResource(false, 'Tidak Dapat Dihapus Karena Sudah Terdaftar Pada Pertanggung Jawaban!', null);
         }
     }
 
