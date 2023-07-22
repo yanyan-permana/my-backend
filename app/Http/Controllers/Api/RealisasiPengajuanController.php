@@ -44,7 +44,7 @@ class RealisasiPengajuanController extends Controller
             'real_nomor' => 'required',
             'real_tanggal' => 'required',
             'real_nominal' => 'required',
-            'real_keterangan' => 'string',
+            'real_keterangan' => 'nullable',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -96,7 +96,7 @@ class RealisasiPengajuanController extends Controller
             'real_nomor' => 'required',
             'real_tanggal' => 'required',
             'real_nominal' => 'required',
-            'real_keterangan' => 'string',
+            'real_keterangan' => 'nullable',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -115,17 +115,16 @@ class RealisasiPengajuanController extends Controller
 
     public function destroy($id)
     {
-        $existingRealisasiPengajuan = RealisasiPengajuan::has('pertanggungJawaban')->get();
-        if (!$existingRealisasiPengajuan) {
-            $realisasi = RealisasiPengajuan::where('real_id', $id)->first();
-            if ($realisasi) {
-                $realisasi->delete();
-                return new RealisasiPengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
-            } else {
-                return new RealisasiPengajuanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
+        $realisasi = RealisasiPengajuan::where('real_id', $id)->first();
+        if ($realisasi) {
+            if ($realisasi->pertanggungJawaban()->exists()) {
+                return new RealisasiPengajuanResource(false, 'Tidak Dapat Dihapus Karena Sudah Terdaftar Pada Pertanggung Jawaban!', null);
             }
+
+            $realisasi->delete();
+            return new RealisasiPengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
-            return new RealisasiPengajuanResource(false, 'Tidak Dapat Dihapus Karena Sudah Terdaftar Pada Pertanggung Jawaban!', null);
+            return new RealisasiPengajuanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
         }
     }
 
