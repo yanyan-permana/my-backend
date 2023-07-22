@@ -29,9 +29,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow mb-4">
-                    <div class="card-header">
+                    {{-- <div class="card-header">
                         <a href="/jenis-approval/create" class="btn btn-primary">Buat Baru</a>
-                    </div>
+                    </div> --}}
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

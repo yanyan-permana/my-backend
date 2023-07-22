@@ -46,15 +46,15 @@ class JenisApprovalController extends Controller
     public function update(Request $request, JenisApproval $jenisApproval)
     {
         $request->validate([
-            'app_jenis' => 'required',
-            'app_nama' => 'required',
+            // 'app_jenis' => 'required',
+            // 'app_nama' => 'required',
             'app_min_nom' => 'required',
             'app_max_nom' => 'required',
         ]);
 
         $jenisApproval->update([
-            'app_jenis' => $request->app_jenis,
-            'app_nama' => $request->app_nama,
+            // 'app_jenis' => $request->app_jenis,
+            // 'app_nama' => $request->app_nama,
             'app_min_nom' => $request->app_min_nom,
             'app_max_nom' => $request->app_max_nom,
         ]);

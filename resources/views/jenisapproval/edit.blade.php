@@ -24,13 +24,13 @@
                             @method('put')
                             <div class="form-group">
                                 <label for="app_jenis">Jenis *</label>
-                                <input type="text" class="form-control" name="app_jenis" id="app_jenis"
-                                    value="{{ $jenisApproval->app_jenis }}" required>
+                                <input type="text" class="form-control"id="app_jenis"
+                                    value="{{ $jenisApproval->app_jenis }}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="app_nama">Nama *</label>
-                                <input type="text" class="form-control" name="app_nama" id="app_nama"
-                                    value="{{ $jenisApproval->app_nama }}" required>
+                                <input type="text" class="form-control"id="app_nama"
+                                    value="{{ $jenisApproval->app_nama }}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="app_min_nom">Minimal Nominal *</label>
@@ -43,8 +43,8 @@
                                     value="{{ $jenisApproval->app_max_nom }}" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Update</button>
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-id="{{ $jenisApproval->app_id }}" id="btn-hapus"
-                                data-target="#modal-hapus">Hapus</button>
+                            {{-- <button type="button" class="btn btn-danger" data-toggle="modal" data-id="{{ $jenisApproval->app_id }}" id="btn-hapus"
+                                data-target="#modal-hapus">Hapus</button> --}}
                         </form>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    {{-- <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -81,5 +81,5 @@
 
             $('#form-hapus').attr('action', '/jenis-approval/' + id);
         });
-    </script>
+    </script> --}}
 @endsection
