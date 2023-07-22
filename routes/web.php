@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\web\DashboardController;
 use App\Http\Controllers\web\JenisApprovalController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\web\LoginController;
 use App\Http\Controllers\web\KaryawanController;
 use Illuminate\Support\Facades\Route;
 

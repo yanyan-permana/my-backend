@@ -43,43 +43,10 @@
                                     value="{{ $jenisApproval->app_max_nom }}" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Update</button>
-                            {{-- <button type="button" class="btn btn-danger" data-toggle="modal" data-id="{{ $jenisApproval->app_id }}" id="btn-hapus"
-                                data-target="#modal-hapus">Hapus</button> --}}
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    {{-- <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus Data</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Apakah Anda yakin ingin menghapus data ini?</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <form method="post" id="form-hapus">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $(document).on('click', '#btn-hapus', function() {
-            const id = $(this).data('id');
-
-            $('#form-hapus').attr('action', '/jenis-approval/' + id);
-        });
-    </script> --}}
 @endsection
