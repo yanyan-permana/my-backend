@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\PenerimaanLangsungController;
 use App\Http\Controllers\Api\PengajuanController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\RealisasiPengajuanController;
+use App\Http\Controllers\Api\RealisasiPengajuanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +47,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/penerimaan-langsung', PenerimaanLangsungController::class);
     Route::get('/get-nomortpl', [PenerimaanLangsungController::class, 'getNomor']);
     Route::apiResource('/realisasi-pengajuan', RealisasiPengajuanController::class);
+    Route::get('/get-nomorrpl', [RealisasiPengajuanController::class, 'getNomor']);
     Route::get('/show-verifikasi', [ApprovalPengajuanController::class, 'getPengajuanVerifikasi']);
     Route::get('/show-keuangan', [ApprovalPengajuanController::class, 'getPengajuanKeuangan']);
     Route::get('/show-direksi', [ApprovalPengajuanController::class, 'getPengajuanDireksi']);

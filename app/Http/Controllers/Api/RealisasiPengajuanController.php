@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\RealisasiPengajuanResource;
 use App\Models\ApprovalPengajuan;
 use App\Models\RealisasiPengajuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class RealisasiPengajuanController extends Controller
@@ -93,17 +95,22 @@ class RealisasiPengajuanController extends Controller
 
     public function loadPengajuan()
     {
-        $result = ApprovalPengajuan::where('is_complete', 'selesai')->with('pengajuan')->get();
+        $result = ApprovalPengajuan::where('is_complete', 'selesai')
+            ->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('t_realisasi_pengajuan')
+                    ->whereRaw('t_realisasi_pengajuan.aju_app_id = t_approval_pengajuan.aju_app_id');
+            })->with(['pengajuan', 'pengajuan.jenisTransaksi', 'pengajuan.karyawan'])->get();
         if ($result) {
-            return new RealisasiPengajuanResource(true, 'Realisasi Ditemukan!', $result);
+            return new RealisasiPengajuanResource(true, 'Pengajuan Ditemukan!', $result);
         } else {
-            return new RealisasiPengajuanResource(false, 'Realisasi Tidak Ditemukan!', null);
+            return new RealisasiPengajuanResource(false, 'Pengajuan Tidak Ditemukan!', null);
         }
     }
 
     public function getNomor()
     {
-        $result = RealisasiPengajuan::generateAJUNumber();
+        $result = RealisasiPengajuan::generateRealNumber();
         if ($result) {
             return new RealisasiPengajuanResource(true, 'Realisasi Nomor Ditemukan!', $result);
         } else {
