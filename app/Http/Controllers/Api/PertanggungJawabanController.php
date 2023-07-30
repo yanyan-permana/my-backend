@@ -59,8 +59,19 @@ class PertanggungJawabanController extends Controller
 
     public function show($id)
     {
-        $realisasi = PertanggungJawaban::where('tgjwb_id', $id)->first();
+        $realisasi = PertanggungJawaban::where('tgjwb_id', $id)->with('realisasi')->first();
         if ($realisasi) {
+            $realisasi = [
+                'real_id' => $realisasi->real_id,
+                'tgjwb_id' => $realisasi->tgjwb_id,
+                'tgjwb_keterangan' => $realisasi->tgjwb_keterangan,
+                'tgjwb_nominal' => $realisasi->tgjwb_nominal,
+                'tgjwb_nomor' => $realisasi->tgjwb_nomor,
+                'b_tanggal' => $realisasi->b_tanggal,
+                'trans_jns' => $realisasi->trans_jns,
+                'real_nomor' => $realisasi->realisasi->real_nomor,
+                'real_nominal' => $realisasi->realisasi->real_nominal,
+            ];
             return new PertanggungJawabanResource(true, 'Data realisasi Ditemukan!', $realisasi);
         } else {
             return new PertanggungJawabanResource(false, 'Data realisasi Tidak Ditemukan!', null);
