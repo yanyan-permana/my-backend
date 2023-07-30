@@ -41,10 +41,10 @@ class RealisasiPengajuanController extends Controller
         $validator = Validator::make($request->all(), [
             'aju_app_id' => 'required',
             'real_pjbt_id' => 'required',
-            'real_nomor' => 'required',
+            'real_nomor' => 'required|unique:App\Models\RealisasiPengajuan, real_nomor',
             'real_tanggal' => 'required',
             'real_nominal' => 'required',
-            'real_keterangan' => 'nullable',
+            'real_keterangan' => 'nullable|string',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -87,16 +87,17 @@ class RealisasiPengajuanController extends Controller
         }
     }
 
-    public function update(Request $request, RealisasiPengajuan $realisasi)
+    public function update(Request $request, $id)
     {
+        $realisasi = RealisasiPengajuan::find($id);
         // validasi
         $validator = Validator::make($request->all(), [
             'aju_app_id' => 'required',
             'real_pjbt_id' => 'required',
-            'real_nomor' => 'required',
+            'real_nomor' => 'required|unique:App\Models\RealisasiPengajuan, real_nomor',
             'real_tanggal' => 'required',
             'real_nominal' => 'required',
-            'real_keterangan' => 'nullable',
+            'real_keterangan' => 'nullable|string',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -110,6 +111,7 @@ class RealisasiPengajuanController extends Controller
             'real_nominal' => $request->real_nominal,
             'real_keterangan' => $request->real_keterangan,
         ]);
+
         return new RealisasiPengajuanResource(true, 'Data Realisasi Berhasil Diubah!', $realisasi);
     }
 

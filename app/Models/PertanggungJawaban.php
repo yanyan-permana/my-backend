@@ -31,7 +31,7 @@ class PertanggungJawaban extends Model
             $number = 1;
         }
 
-        $tplNumber = 'PJB' . $number;
+        $tplNumber = 'PJWB' . $number;
 
         return $tplNumber;
     }

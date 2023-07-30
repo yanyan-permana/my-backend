@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('t_pertanggung_jawaban', function (Blueprint $table) {
             $table->bigIncrements('tgjwb_id');
             $table->integer('real_id');
-            $table->integer('trans_jns');
+            $table->string('trans_jns');
             $table->string('tgjwb_nomor');
             $table->string('tgjwb_tanggal');
             $table->double('tgjwb_nominal')->default(0.00);

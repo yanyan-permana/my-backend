@@ -33,19 +33,19 @@ class LoginController extends Controller
             'password' => $credentials['usr_password'],
         ];
         // jika autentikasi gagal
-        if(!$token = auth()->guard('api')->attempt($credentials)) {
+        if (!$token = auth()->guard('api')->attempt($credentials)) {
             return response()->json([
                 'success' => false,
                 'message' => 'User login atau User password Anda salah'
             ], 401);
         }
-		
-		// Tampilkan waktu sebulan mendatang untuk masa expired token
-		$token_expired = Carbon::now()->addMonth()->format('Y-m-d');
-		
+
+        // Tampilkan waktu sebulan mendatang untuk masa expired token
+        $token_expired = Carbon::now()->addMonth()->format('Y-m-d');
+
         return response()->json([
             'success' => true,
-            'user'    => auth()->guard('api')->user(),    
+            'user'    => auth()->guard('api')->user(),
             'token'   => $token,
             'token_expired' => $token_expired
         ], 200);

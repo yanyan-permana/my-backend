@@ -13,7 +13,20 @@ class PertanggungJawabanController extends Controller
 {
     public function index()
     {
-        $realisasi = PertanggungJawaban::with('realisasi')->get();
+        $realisasi = PertanggungJawaban::with('realisasi')->get()
+            ->map(function ($data) {
+                return [
+                    'real_id' => $data->real_id,
+                    'tgjwb_id' => $data->tgjwb_id,
+                    'tgjwb_keterangan' => $data->tgjwb_keterangan,
+                    'tgjwb_nominal' => $data->tgjwb_nominal,
+                    'tgjwb_nomor' => $data->tgjwb_nomor,
+                    'b_tanggal' => $data->b_tanggal,
+                    'trans_jns' => $data->trans_jns,
+                    'real_nomor' => $data->realisasi->real_nomor,
+                    'real_nominal' => $data->realisasi->real_nominal,
+                ];
+            });
         return new PertanggungJawabanResource(true, 'List Data Realisasi', $realisasi);
     }
 
@@ -23,7 +36,7 @@ class PertanggungJawabanController extends Controller
         $validator = Validator::make($request->all(), [
             'real_id' => 'required',
             'trans_jns' => 'required',
-            'tgjwb_nomor' => 'required',
+            'tgjwb_nomor' => 'required|unique:App\Models\PertanggungJawaban,tgjwb_nomor',
             'tgjwb_tanggal' => 'required',
             'tgjwb_nominal' => 'required',
             'tgjwb_keterangan' => 'string',
