@@ -158,6 +158,7 @@ class PertanggungJawabanController extends Controller
         $pertanggungJawaban = PertanggungJawaban::where('tgjwb_id', $id)->first();
         if ($pertanggungJawaban) {
             $pertanggungJawaban->delete();
+            BuktiTransaksi::where('trans_id', $pertanggungJawaban->tgjwb_id)->delete();
             return new PertanggungJawabanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
             return new PertanggungJawabanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
