@@ -82,7 +82,7 @@ class PertanggungJawabanController extends Controller
     public function show($id)
     {
         $pertanggungJawaban = PertanggungJawaban::where('tgjwb_id', $id)->with('realisasi', 'bukti')->first();
-       
+
         if ($pertanggungJawaban) {
             $pertanggungJawaban = [
                 'real_id' => $pertanggungJawaban->real_id,
@@ -90,7 +90,7 @@ class PertanggungJawabanController extends Controller
                 'tgjwb_keterangan' => $pertanggungJawaban->tgjwb_keterangan,
                 'tgjwb_nominal' => $pertanggungJawaban->tgjwb_nominal,
                 'tgjwb_nomor' => $pertanggungJawaban->tgjwb_nomor,
-                'b_tanggal' => $pertanggungJawaban->b_tanggal,
+                'tgjwb_tanggal' => $pertanggungJawaban->tgjwb_tanggal,
                 'trans_jns' => $pertanggungJawaban->trans_jns,
                 'real_nomor' => $pertanggungJawaban->realisasi ? $pertanggungJawaban->realisasi->real_nomor : null,
                 'real_nominal' => $pertanggungJawaban->realisasi ? $pertanggungJawaban->realisasi->real_nominal : null,
