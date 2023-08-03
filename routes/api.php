@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApprovalPengajuanController;
+use App\Http\Controllers\Api\BuktiTransaksiController;
 use App\Http\Controllers\Api\JenisApprovalController;
 use App\Http\Controllers\Api\JenisTransaksiController;
 use App\Http\Controllers\Api\KaryawanController;
@@ -50,6 +51,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/realisasi-pengajuan', RealisasiPengajuanController::class);
     Route::get('/get-nomorrpl', [RealisasiPengajuanController::class, 'getNomor']);
     Route::apiResource('/pertanggung-jawaban', PertanggungJawabanController::class);
+    Route::apiResource('/bukti-transaksi', BuktiTransaksiController::class);
     Route::get('/get-nomortgjwb', [PertanggungJawabanController::class, 'getNomor']);
     Route::get('/show-verifikasi', [ApprovalPengajuanController::class, 'getPengajuanVerifikasi']);
     Route::get('/show-keuangan', [ApprovalPengajuanController::class, 'getPengajuanKeuangan']);

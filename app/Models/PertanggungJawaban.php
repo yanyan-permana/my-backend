@@ -40,4 +40,8 @@ class PertanggungJawaban extends Model
     {
         return $this->hasOne(RealisasiPengajuan::class, 'real_id', 'real_id');
     }
+    public function bukti()
+    {
+        return $this->hasMany(BuktiTransaksi::class, 'trans_id', 'tgjwb_id');
+    }
 }

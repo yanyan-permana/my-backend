@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PertanggungJawabanResource;
+use App\Models\BuktiTransaksi;
 use App\Models\PertanggungJawaban;
 use App\Models\RealisasiPengajuan;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class PertanggungJawabanController extends Controller
 {
     public function index()
     {
-        $realisasi = PertanggungJawaban::with('realisasi')->get()
+        $pertanggungJawaban = PertanggungJawaban::with('realisasi')->get()
             ->map(function ($data) {
                 return [
                     'real_id' => $data->real_id,
@@ -21,13 +22,13 @@ class PertanggungJawabanController extends Controller
                     'tgjwb_keterangan' => $data->tgjwb_keterangan,
                     'tgjwb_nominal' => $data->tgjwb_nominal,
                     'tgjwb_nomor' => $data->tgjwb_nomor,
-                    'b_tanggal' => $data->b_tanggal,
+                    'tgjwb_tanggal' => $data->tgjwb_tanggal,
                     'trans_jns' => $data->trans_jns,
-                    'real_nomor' => $data->realisasi->real_nomor,
-                    'real_nominal' => $data->realisasi->real_nominal,
+                    'real_nomor' => $data->realisasi ? $data->realisasi->real_nomor : null,
+                    'real_nominal' => $data->realisasi ? $data->realisasi->real_nominal : null,
                 ];
             });
-        return new PertanggungJawabanResource(true, 'List Data Realisasi', $realisasi);
+        return new PertanggungJawabanResource(true, 'List Data Realisasi', $pertanggungJawaban);
     }
 
     public function store(Request $request)
@@ -40,13 +41,14 @@ class PertanggungJawabanController extends Controller
             'tgjwb_tanggal' => 'required',
             'tgjwb_nominal' => 'required',
             'tgjwb_keterangan' => 'string',
+            'file.*' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:2048'
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        $realisasi = PertanggungJawaban::create([
+        $pertanggungJawaban = PertanggungJawaban::create([
             'real_id' => $request->real_id,
             'trans_jns' => $request->trans_jns,
             'tgjwb_nomor' => $request->tgjwb_nomor,
@@ -54,47 +56,71 @@ class PertanggungJawabanController extends Controller
             'tgjwb_nominal' => $request->tgjwb_nominal,
             'tgjwb_keterangan' => $request->tgjwb_keterangan,
         ]);
-        return new PertanggungJawabanResource(true, 'Data Realisasi Berhasil Ditambahkan!', $realisasi);
+
+        if ($request->hasFile('file')) {
+            $uploadedFiles = $request->file('file');
+            foreach ($uploadedFiles as $uploadedFile) {
+                $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                $filePath = $uploadedFile->storeAs('public/uploads', $filename);
+
+                $fileData = [
+                    'trans_id' => $pertanggungJawaban->tgjwb_id,
+                    'trans_jns' => 'pengeluaran',
+                    'bkt_file_nama' => $filename,
+                    'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
+                    'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
+                    'bkt_file_ukuran' => $uploadedFile->getSize(),
+                    'bkt_file_folder' => $filePath,
+                ];
+
+                $bukti = BuktiTransaksi::create($fileData);
+            }
+        }
+        return new PertanggungJawabanResource(true, 'Data Realisasi Berhasil Ditambahkan!', ['pertanggung_jawaban' => $pertanggungJawaban, 'bukti' => $bukti]);
     }
 
     public function show($id)
     {
-        $realisasi = PertanggungJawaban::where('tgjwb_id', $id)->with('realisasi')->first();
-        if ($realisasi) {
-            $realisasi = [
-                'real_id' => $realisasi->real_id,
-                'tgjwb_id' => $realisasi->tgjwb_id,
-                'tgjwb_keterangan' => $realisasi->tgjwb_keterangan,
-                'tgjwb_nominal' => $realisasi->tgjwb_nominal,
-                'tgjwb_nomor' => $realisasi->tgjwb_nomor,
-                'b_tanggal' => $realisasi->b_tanggal,
-                'trans_jns' => $realisasi->trans_jns,
-                'real_nomor' => $realisasi->realisasi->real_nomor,
-                'real_nominal' => $realisasi->realisasi->real_nominal,
+        $pertanggungJawaban = PertanggungJawaban::where('tgjwb_id', $id)->with('realisasi', 'bukti')->first();
+       
+        if ($pertanggungJawaban) {
+            $pertanggungJawaban = [
+                'real_id' => $pertanggungJawaban->real_id,
+                'tgjwb_id' => $pertanggungJawaban->tgjwb_id,
+                'tgjwb_keterangan' => $pertanggungJawaban->tgjwb_keterangan,
+                'tgjwb_nominal' => $pertanggungJawaban->tgjwb_nominal,
+                'tgjwb_nomor' => $pertanggungJawaban->tgjwb_nomor,
+                'b_tanggal' => $pertanggungJawaban->b_tanggal,
+                'trans_jns' => $pertanggungJawaban->trans_jns,
+                'real_nomor' => $pertanggungJawaban->realisasi ? $pertanggungJawaban->realisasi->real_nomor : null,
+                'real_nominal' => $pertanggungJawaban->realisasi ? $pertanggungJawaban->realisasi->real_nominal : null,
+                'bukti' => $pertanggungJawaban->bukti,
             ];
-            return new PertanggungJawabanResource(true, 'Data realisasi Ditemukan!', $realisasi);
+            return new PertanggungJawabanResource(true, 'Data realisasi Ditemukan!', $pertanggungJawaban);
         } else {
             return new PertanggungJawabanResource(false, 'Data realisasi Tidak Ditemukan!', null);
         }
     }
 
-    public function update(Request $request, PertanggungJawaban $realisasi)
+    public function update(Request $request, $id)
     {
+        $pertanggungJawaban = PertanggungJawaban::find($id);
         // validasi
         $validator = Validator::make($request->all(), [
             'real_id' => 'required',
             'trans_jns' => 'required',
-            'tgjwb_nomor' => 'required',
+            'tgjwb_nomor' => 'required|exists:App\Models\PertanggungJawaban,tgjwb_nomor',
             'tgjwb_tanggal' => 'required',
             'tgjwb_nominal' => 'required',
             'tgjwb_keterangan' => 'string',
+            'file.*' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:2048'
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        $realisasi->update([
+        $pertanggungJawaban->update([
             'real_id' => $request->real_id,
             'trans_jns' => $request->trans_jns,
             'tgjwb_nomor' => $request->tgjwb_nomor,
@@ -102,14 +128,36 @@ class PertanggungJawabanController extends Controller
             'tgjwb_nominal' => $request->tgjwb_nominal,
             'tgjwb_keterangan' => $request->tgjwb_keterangan,
         ]);
-        return new PertanggungJawabanResource(true, 'Data Realisasi Berhasil Diubah!', $realisasi);
+
+        $bukti = [];
+
+        if ($request->hasFile('file')) {
+            $uploadedFiles = $request->file('file');
+            foreach ($uploadedFiles as $uploadedFile) {
+                $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                $filePath = $uploadedFile->storeAs('public/uploads', $filename);
+
+                $fileData = [
+                    'trans_id' => $pertanggungJawaban->tgjwb_id,
+                    'trans_jns' => 'pengeluaran',
+                    'bkt_file_nama' => $filename,
+                    'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
+                    'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
+                    'bkt_file_ukuran' => $uploadedFile->getSize(),
+                    'bkt_file_folder' => $filePath,
+                ];
+
+                $bukti = BuktiTransaksi::create($fileData);
+            }
+        }
+        return new PertanggungJawabanResource(true, 'Data Realisasi Berhasil Diubah!', ['pertanggung_jawaban' => $pertanggungJawaban, 'bukti' => $bukti]);
     }
 
     public function destroy($id)
     {
-        $realisasi = PertanggungJawaban::where('tgjwb_id', $id)->first();
-        if ($realisasi) {
-            $realisasi->delete();
+        $pertanggungJawaban = PertanggungJawaban::where('tgjwb_id', $id)->first();
+        if ($pertanggungJawaban) {
+            $pertanggungJawaban->delete();
             return new PertanggungJawabanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
             return new PertanggungJawabanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);
