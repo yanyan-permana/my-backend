@@ -36,7 +36,6 @@ class PertanggungJawabanController extends Controller
         // validasi
         $validator = Validator::make($request->all(), [
             'real_id' => 'required',
-            'trans_jns' => 'required',
             'tgjwb_nomor' => 'required|unique:App\Models\PertanggungJawaban,tgjwb_nomor',
             'tgjwb_tanggal' => 'required',
             'tgjwb_nominal' => 'required',
@@ -50,7 +49,7 @@ class PertanggungJawabanController extends Controller
 
         $pertanggungJawaban = PertanggungJawaban::create([
             'real_id' => $request->real_id,
-            'trans_jns' => $request->trans_jns,
+            'trans_jns' => 'pengeluaran',
             'tgjwb_nomor' => $request->tgjwb_nomor,
             'tgjwb_tanggal' => $request->tgjwb_tanggal,
             'tgjwb_nominal' => $request->tgjwb_nominal,
@@ -65,7 +64,7 @@ class PertanggungJawabanController extends Controller
 
                 $fileData = [
                     'trans_id' => $pertanggungJawaban->tgjwb_id,
-                    'trans_jns' => 'pengeluaran',
+                    'trans_jns' => $pertanggungJawaban->trans_jns,
                     'bkt_file_nama' => $filename,
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
