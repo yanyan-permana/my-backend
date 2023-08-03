@@ -8,6 +8,7 @@ use App\Models\BuktiTransaksi;
 use App\Models\PertanggungJawaban;
 use App\Models\RealisasiPengajuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PertanggungJawabanController extends Controller
@@ -157,6 +158,10 @@ class PertanggungJawabanController extends Controller
         $pertanggungJawaban = PertanggungJawaban::where('tgjwb_id', $id)->first();
         if ($pertanggungJawaban) {
             $pertanggungJawaban->delete();
+            $buktiFiles = BuktiTransaksi::where('trans_id', $pertanggungJawaban->tgjwb_id)->get();
+            foreach ($buktiFiles as $file) {
+                Storage::delete($file->bkt_file_folder);
+            }
             BuktiTransaksi::where('trans_id', $pertanggungJawaban->tgjwb_id)->delete();
             return new PertanggungJawabanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
