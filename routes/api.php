@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ApprovalPengajuanController;
 use App\Http\Controllers\Api\BuktiTransaksiController;
+use App\Http\Controllers\Api\HistoryPengajuanController;
 use App\Http\Controllers\Api\JenisApprovalController;
 use App\Http\Controllers\Api\JenisTransaksiController;
 use App\Http\Controllers\Api\KaryawanController;
@@ -62,5 +63,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/app-direksi/{ajuid}', [ApprovalPengajuanController::class, 'approveDireksi']);
     Route::get('/load-pengajuan', [RealisasiPengajuanController::class, 'loadPengajuan']);
     Route::get('/load-realisasi', [PertanggungJawabanController::class, 'loadRealisasi']);
+    Route::apiResource('/history-pengajuan', HistoryPengajuanController::class);
+    Route::get('/history-pengajuan-byuser/{id}', [HistoryPengajuanController::class, 'getByUser']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');
