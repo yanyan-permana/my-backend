@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\HistoryPengajuanController;
 use App\Http\Controllers\Api\JenisApprovalController;
 use App\Http\Controllers\Api\JenisTransaksiController;
 use App\Http\Controllers\Api\KaryawanController;
+use App\Http\Controllers\Api\LaporanPenerimaanController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\PejabatApprovalController;
@@ -65,5 +66,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/load-realisasi', [PertanggungJawabanController::class, 'loadRealisasi']);
     Route::apiResource('/history-pengajuan', HistoryPengajuanController::class);
     Route::get('/history-pengajuan-byuser/{id}', [HistoryPengajuanController::class, 'getByUser']);
+    Route::get('/laporan-penerimaan', [LaporanPenerimaanController::class, 'index']);
+    Route::get('/laporan-penerimaan/{id}', [LaporanPenerimaanController::class, 'getRincianPenerimaan']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');
