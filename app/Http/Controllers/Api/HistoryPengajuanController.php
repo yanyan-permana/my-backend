@@ -17,7 +17,7 @@ class HistoryPengajuanController extends Controller
 
     public function getByUser($id)
     {
-        $result = ViewHistoryPengajuan::where('kry_id', $id)->get();
+        $result = ViewHistoryPengajuan::where('kry_id', $id)->orderBy('aju_tanggal', 'desc')->get();
         if ($result) {
             return new HistoryPengajuanResource(true, 'Data History Pengajuan Ditemukan!', $result);
         } else {
