@@ -28,7 +28,7 @@ class PenerimaanLangsung extends Model
 
     public function jenisTransaksi()
     {
-        return $this->belongsTo(JenisTransaksi::class, 'trans_jns');
+        return $this->belongsTo(JenisTransaksi::class, 'trx_id');
     }
 
     public static function generateTplNumber()

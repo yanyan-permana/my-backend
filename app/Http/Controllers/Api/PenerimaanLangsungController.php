@@ -17,7 +17,7 @@ class PenerimaanLangsungController extends Controller
                 return [
                     'tpl_id' => $penerimaanLangsung->tpl_id,
                     'usr_id' => $penerimaanLangsung->usr_id,
-                    'trans_jns' => $penerimaanLangsung->trans_jns,
+                    'trx_id' => $penerimaanLangsung->trx_id,
                     'tpl_nomor' => $penerimaanLangsung->tpl_nomor,
                     'tpl_tanggal' => $penerimaanLangsung->tpl_tanggal,
                     'tpl_nominal' => $penerimaanLangsung->tpl_nominal,
