@@ -68,25 +68,24 @@ class ApprovalPengajuanController extends Controller
 
         $jenisApproval = JenisApproval::where('app_jenis', 'app_keuangan')->first();
         $minNom = $jenisApproval->app_min_nom;
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->has('approval');
         $dataPengajuan->where('aju_nominal', '>=', $minNom);
 
-        if ($statusApprove === '') {
-            $dataPengajuan->whereDoesntHave('approval', function ($query) {
-                $query->whereNotNull('aju_app_ver_status')
-                    ->whereNotNull('aju_app_keu_status')
-                    ->WhereNull('aju_app_dir_status');
-            })
-                ->where(function ($query) {
-                    $query->whereDoesntHave('approval', function ($subquery) {
-                        $subquery->where('is_complete', 'ditolak')
-                            ->orWhere('is_complete', 'selesai');
-                    });
-                })
-                ->orWhere(function ($query) {
-                    $query->whereDoesntHave('approval');
+        $dataPengajuan->whereDoesntHave('approval', function ($query) {
+            $query->whereNotNull('aju_app_ver_status')
+                ->whereNull('aju_app_keu_status')
+                ->WhereNull('aju_app_dir_status');
+        })
+            ->where(function ($query) {
+                $query->whereDoesntHave('approval', function ($subquery) {
+                    $subquery->where('is_complete', 'ditolak')
+                        ->orWhere('is_complete', 'selesai');
                 });
-        } elseif ($statusApprove === 'disetujui') {
+            });
+        // ->orWhere(function ($query) {
+        //     $query->whereDoesntHave('approval');
+        // });
+        if ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_keu_status', '=', 'disetujui');
             });
@@ -169,7 +168,7 @@ class ApprovalPengajuanController extends Controller
         $approveStatus = $request->input('status_approve');
         $approveKeterangan = $request->input('keterangan', '');
 
-        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 'active'])
+        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 1])
             ->with(['jenisApproval' => function ($query) {
                 $query->where('app_jenis', 'app_verifikasi');
             }])
@@ -237,7 +236,7 @@ class ApprovalPengajuanController extends Controller
         $approveStatus = $request->input('status_approve');
         $approveKeterangan = $request->input('keterangan', '');
 
-        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 'active'])
+        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 1])
             ->with(['jenisApproval' => function ($query) {
                 $query->where('app_jenis', 'app_keuangan');
             }])
@@ -311,7 +310,7 @@ class ApprovalPengajuanController extends Controller
         $approveStatus = $request->input('status_approve');
         $approveKeterangan = $request->input('keterangan', '');
 
-        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 'active'])
+        $pejabatApp = PejabatApproval::where(['usr_id' => $usrid, 'app_auth_user' => $appauthuser, 'pjbt_status' => 1])
             ->with(['jenisApproval' => function ($query) {
                 $query->where('app_jenis', 'app_direksi');
             }])
