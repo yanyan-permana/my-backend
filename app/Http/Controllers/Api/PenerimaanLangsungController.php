@@ -36,7 +36,7 @@ class PenerimaanLangsungController extends Controller
         // validasi
         $validator = Validator::make($request->all(), [
             'usr_id' => 'required',
-            'trans_jns' => 'required',
+            'trx_id' => 'required',
             'tpl_nomor' => 'required|unique:App\Models\PenerimaanLangsung,tpl_nomor',
             'tpl_tanggal' => 'required',
             'tpl_nominal' => 'required',
@@ -48,7 +48,8 @@ class PenerimaanLangsungController extends Controller
         // input penerimaanLangsung
         $penerimaanLangsung = PenerimaanLangsung::create([
             'usr_id' => $request->usr_id,
-            'trans_jns' => $request->trans_jns,
+            'trx_id' => $request->trx_id,
+            'trans_jns' => 'penerimaan',
             'tpl_nomor' => $request->tpl_nomor,
             'tpl_tanggal' => $request->tpl_tanggal,
             'tpl_nominal' => $request->tpl_nominal,
@@ -85,7 +86,7 @@ class PenerimaanLangsungController extends Controller
         // validasi
         $validator = Validator::make($request->all(), [
             'usr_id' => 'required',
-            'trans_jns' => 'required',
+            'trx_id' => 'required',
             'tpl_nomor' => 'required|exists:App\Models\PenerimaanLangsung,tpl_nomor',
             'tpl_tanggal' => 'required',
             'tpl_nominal' => 'required',
@@ -96,7 +97,7 @@ class PenerimaanLangsungController extends Controller
         }
         $penerimaanLangsung->update([
             'usr_id' => $request->usr_id,
-            'trans_jns' => $request->trans_jns,
+            'trx_id' => $request->trx_id,
             'tpl_nomor' => $request->tpl_nomor,
             'tpl_tanggal' => $request->tpl_tanggal,
             'tpl_nominal' => $request->tpl_nominal,
