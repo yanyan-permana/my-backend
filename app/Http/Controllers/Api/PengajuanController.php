@@ -80,6 +80,27 @@ class PengajuanController extends Controller
         }
     }
 
+    public function getByUseId($id)
+    {
+        $pengajuan = Pengajuan::where('kry_id', $id)->with(['jenisTransaksi', 'karyawan'])->get()
+            ->map(function ($pengajuan) {
+                return [
+                    'aju_id' => $pengajuan->aju_id,
+                    'kry_id' => $pengajuan->kry_id,
+                    'kry_nama' => $pengajuan->karyawan->kry_nama,
+                    'trx_id' => $pengajuan->trx_id,
+                    'trx_nama' => $pengajuan->jenisTransaksi->trx_nama,
+                    'aju_nomor' => $pengajuan->aju_nomor,
+                    'aju_tanggal' => $pengajuan->aju_tanggal,
+                    'aju_nominal' => $pengajuan->aju_nominal,
+                    'aju_keterangan' => $pengajuan->aju_keterangan,
+                    'created_at' => $pengajuan->created_at,
+                    'updated_at' => $pengajuan->updated_at,
+                ];
+            });
+        return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
+    }
+
     public function update(Request $request, Pengajuan $pengajuan)
     {
         // validasi

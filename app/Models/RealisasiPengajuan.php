@@ -45,4 +45,9 @@ class RealisasiPengajuan extends Model
     {
         return $this->hasOne(ApprovalPengajuan::class, 'aju_app_id', 'aju_app_id');
     }
+    
+    public function karyawan()
+    {
+        return $this->hasOne(Karyawan::class, 'kry_id', 'real_pjbt_id');
+    }
 }

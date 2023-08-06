@@ -47,6 +47,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/jenis-transaksi', JenisTransaksiController::class);
     Route::apiResource('/pejabat-approval', PejabatApprovalController::class);
     Route::apiResource('/pengajuan', PengajuanController::class);
+    Route::get('/pengajuan-byuser/{id}', [PengajuanController::class, 'getByUseId']);
     Route::get('/get-nomoraju', [PengajuanController::class, 'getNomor']);
     Route::apiResource('/penerimaan-langsung', PenerimaanLangsungController::class);
     Route::get('/get-nomortpl', [PenerimaanLangsungController::class, 'getNomor']);

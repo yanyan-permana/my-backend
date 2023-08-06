@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('t_bukti', function (Blueprint $table) {
             $table->bigIncrements('bkt_id');
             $table->integer('trans_id');
-            $table->integer('trans_jns');
+            $table->string('trans_jns');
             $table->string('bkt_file_nama');
             $table->string('bkt_mime_tipe');
             $table->string('bkt_orig_nama');
