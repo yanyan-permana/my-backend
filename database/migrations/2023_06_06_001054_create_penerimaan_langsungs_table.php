@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('tpl_id');
             $table->unsignedBigInteger('usr_id');
             $table->foreign('usr_id')->references('usr_id')->on('m_user');
-            $table->string('trx_id');
+            $table->integer('trx_id');
             $table->string('trans_jns');
             $table->string('tpl_nomor');
             $table->string('tpl_tanggal');

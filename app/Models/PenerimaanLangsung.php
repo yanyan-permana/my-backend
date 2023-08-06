@@ -13,6 +13,7 @@ class PenerimaanLangsung extends Model
     protected $primaryKey = 'tpl_id';
     protected $fillable = [
         'usr_id',
+        'trx_id',
         'trans_jns',
         'tpl_nomor',
         'tpl_tanggal',

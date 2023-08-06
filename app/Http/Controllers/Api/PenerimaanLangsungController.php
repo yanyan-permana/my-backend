@@ -45,6 +45,7 @@ class PenerimaanLangsungController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
         // input penerimaanLangsung
         $penerimaanLangsung = PenerimaanLangsung::create([
             'usr_id' => $request->usr_id,
