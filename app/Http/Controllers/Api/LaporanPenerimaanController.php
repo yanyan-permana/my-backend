@@ -15,6 +15,7 @@ class LaporanPenerimaanController extends Controller
         $result = LaporanPenerimaan::all();
         return new LaporanPenerimaanResource(true, 'Laporan Penerimaan', $result);
     }
+
     public function getRincianPenerimaan($id)
     {
         $result = LaporanRincianPenerimaan::where('trx_id', $id)->get();

@@ -67,6 +67,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/load-realisasi', [PertanggungJawabanController::class, 'loadRealisasi']);
     Route::apiResource('/history-pengajuan', HistoryPengajuanController::class);
     Route::get('/history-pengajuan-byuser/{id}', [HistoryPengajuanController::class, 'getByUser']);
+    Route::get('/pengajuan-terakhir/{id}', [HistoryPengajuanController::class, 'getPengajuanTrakhir']);
     Route::get('/laporan-penerimaan', [LaporanPenerimaanController::class, 'index']);
     Route::get('/laporan-penerimaan/{id}', [LaporanPenerimaanController::class, 'getRincianPenerimaan']);
 });

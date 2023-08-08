@@ -34,4 +34,14 @@ class HistoryPengajuanController extends Controller
             return new HistoryPengajuanResource(false, 'Data History Pengajuan Tidak Ditemukan!', null);
         }
     }
+
+    public function getPengajuanTrakhir($id)
+    {
+        $result = ViewHistoryPengajuan::where('kry_id', $id)->latest('aju_tanggal')->orderBy('aju_nomor', 'desc')->first();
+        if ($result) {
+            return new HistoryPengajuanResource(true, 'Pengajuan Terakhir Ditemukan!', $result);
+        } else {
+            return new HistoryPengajuanResource(false, 'Anda Belum Melakukan Pengajuan!', null);
+        }
+    }
 }
