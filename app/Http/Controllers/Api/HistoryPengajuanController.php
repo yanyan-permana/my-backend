@@ -37,7 +37,7 @@ class HistoryPengajuanController extends Controller
 
     public function getPengajuanTrakhir($id)
     {
-        $result = ViewHistoryPengajuan::where('kry_id', $id)->latest('aju_tanggal')->orderBy('aju_nomor', 'desc')->first();
+        $result = ViewHistoryPengajuan::where('kry_id', $id)->latest('aju_tanggal')->orderBy('aju_id', 'desc')->first();
         if ($result) {
             return new HistoryPengajuanResource(true, 'Pengajuan Terakhir Ditemukan!', $result);
         } else {
