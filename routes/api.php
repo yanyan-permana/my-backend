@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\PertanggungJawabanController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RealisasiPengajuanController;
+use App\Http\Controllers\Api\ResetPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -76,3 +77,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/dashboard/karyawan', [DashboardController::class, 'getAllByKaryawan']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');
+
+
+Route::post('/reset-password', [ResetPasswordController::class, 'index']);
