@@ -79,4 +79,6 @@ Route::middleware('auth:api')->group(function () {
 Route::post('/logout', LogoutController::class)->name('logout');
 
 
-Route::post('/reset-password', [ResetPasswordController::class, 'index']);
+Route::post('/lupa-password', [ResetPasswordController::class, 'index']);
+Route::post('/cek-top', [ResetPasswordController::class, 'checkOtp']);
+Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
