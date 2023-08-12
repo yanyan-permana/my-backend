@@ -13,12 +13,32 @@ class LaporanPenerimaanController extends Controller
     public function index()
     {
         $result = LaporanPenerimaan::all();
-        return new LaporanPenerimaanResource(true, 'Laporan Penerimaan', $result);
+        if ($result) {
+            return new LaporanPenerimaanResource(true, 'Laporan Penerimaan!', $result);
+        } else {
+            return new LaporanPenerimaanResource(false, 'Laporan Penerimaan Tidak Ditemukan!', $result);
+        }
     }
 
     public function getRincianPenerimaan($id)
     {
         $result = LaporanRincianPenerimaan::where('trx_id', $id)->get();
-        return new LaporanPenerimaanResource(true, 'Laporan Penerimaan', $result);
+        if ($result) {
+            return new LaporanPenerimaanResource(true, 'Laporan Penerimaan!', $result);
+        } else {
+            return new LaporanPenerimaanResource(false, 'Laporan Penerimaan Tidak Ditemukan!', $result);
+        }
+    }
+
+    public function getRincianPenerimaanByDate(Request $request)
+    {
+        $startTanggal = $request->input("tanggal_awal");
+        $endTanggal = $request->input("tanggal_akhir");
+        $result = LaporanRincianPenerimaan::whereBetween('tpl_tanggal', [$startTanggal, $endTanggal])->get();
+        if ($result) {
+            return new LaporanPenerimaanResource(true, 'Laporan Penerimaan!', $result);
+        } else {
+            return new LaporanPenerimaanResource(false, 'Laporan Penerimaan Tidak Ditemukan!', $result);
+        }
     }
 }

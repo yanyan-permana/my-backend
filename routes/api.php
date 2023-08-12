@@ -72,6 +72,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/pengajuan-terakhir/{id}', [HistoryPengajuanController::class, 'getPengajuanTrakhir']);
     Route::get('/laporan-penerimaan', [LaporanPenerimaanController::class, 'index']);
     Route::get('/laporan-penerimaan/{id}', [LaporanPenerimaanController::class, 'getRincianPenerimaan']);
+    Route::get('/rincian-laporan-penerimaan', [LaporanPenerimaanController::class, 'getRincianPenerimaanByDate']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/dashboard/karyawan/{id}', [DashboardController::class, 'getByKaryawanId']);
     Route::get('/dashboard/karyawan', [DashboardController::class, 'getAllByKaryawan']);

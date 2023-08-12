@@ -269,7 +269,7 @@ class ApprovalPengajuanController extends Controller
                 $approval->save();
 
                 if ($approveStatus === 'ditolak') {
-                    return new ApprovalPengajuanResource(true, 'Approval verifikasi ditolak', $approval);
+                    return new ApprovalPengajuanResource(true, 'Approval Keuangan ditolak', $approval);
                 }
 
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
@@ -344,7 +344,7 @@ class ApprovalPengajuanController extends Controller
                 $approval->save();
 
                 if ($approveStatus === 'ditolak') {
-                    return new ApprovalPengajuanResource(true, 'Approval verifikasi ditolak', $approval);
+                    return new ApprovalPengajuanResource(true, 'Approval Direksi ditolak', $approval);
                 }
 
                 return new ApprovalPengajuanResource(true, 'Approval Selesai', $approval);
