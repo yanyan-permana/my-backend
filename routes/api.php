@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ApprovalPengajuanController;
 use App\Http\Controllers\Api\BuktiTransaksiController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\HistoryPengajuanController;
 use App\Http\Controllers\Api\JenisApprovalController;
 use App\Http\Controllers\Api\JenisTransaksiController;
@@ -70,5 +71,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/pengajuan-terakhir/{id}', [HistoryPengajuanController::class, 'getPengajuanTrakhir']);
     Route::get('/laporan-penerimaan', [LaporanPenerimaanController::class, 'index']);
     Route::get('/laporan-penerimaan/{id}', [LaporanPenerimaanController::class, 'getRincianPenerimaan']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard/karyawan/{id}', [DashboardController::class, 'getByKaryawanId']);
+    Route::get('/dashboard/karyawan', [DashboardController::class, 'getAllByKaryawan']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');
