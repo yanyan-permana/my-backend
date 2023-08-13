@@ -34,7 +34,7 @@ class LaporanPengeluaranController extends Controller
     {
         $startTanggal = $request->input("tanggal_awal");
         $endTanggal = $request->input("tanggal_akhir");
-        $result = LaporanRincianPengeluaran::whereBetween('tpl_tanggal', [$startTanggal, $endTanggal])->get();
+        $result = LaporanRincianPengeluaran::whereBetween('real_tanggal', [$startTanggal, $endTanggal])->get();
         if ($result) {
             return new LaporanPengeluaranResource(true, 'Laporan Pengeluaran!', $result);
         } else {
