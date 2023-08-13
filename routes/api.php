@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\JenisApprovalController;
 use App\Http\Controllers\Api\JenisTransaksiController;
 use App\Http\Controllers\Api\KaryawanController;
 use App\Http\Controllers\Api\LaporanPenerimaanController;
+use App\Http\Controllers\Api\LaporanPengeluaranController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\PejabatApprovalController;
@@ -73,6 +74,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/laporan-penerimaan', [LaporanPenerimaanController::class, 'index']);
     Route::get('/laporan-penerimaan/{id}', [LaporanPenerimaanController::class, 'getRincianPenerimaan']);
     Route::get('/rincian-laporan-penerimaan', [LaporanPenerimaanController::class, 'getRincianPenerimaanByDate']);
+
+    Route::get('/laporan-pengeluaran', [LaporanPengeluaranController::class, 'index']);
+    Route::get('/laporan-pengeluaran/{id}', [LaporanPengeluaranController::class, 'getRincianPengeluaran']);
+    Route::get('/rincian-laporan-pengeluaran', [LaporanPengeluaranController::class, 'getRincianPengeluaranByDate']);
+
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/dashboard/karyawan/{id}', [DashboardController::class, 'getByKaryawanId']);
     Route::get('/dashboard/karyawan', [DashboardController::class, 'getAllByKaryawan']);
