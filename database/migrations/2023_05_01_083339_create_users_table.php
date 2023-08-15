@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('usr_hak_akses', ['karyawan', 'administrator', 'keuangan', 'dikreksi', 'verifikasi'])->nullable();
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('usr_password');
+            $table->string('token');
             $table->rememberToken();
             $table->timestamps();
         });

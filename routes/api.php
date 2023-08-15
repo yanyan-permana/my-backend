@@ -82,6 +82,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/dashboard/karyawan/{id}', [DashboardController::class, 'getByKaryawanId']);
     Route::get('/dashboard/karyawan', [DashboardController::class, 'getAllByKaryawan']);
+    Route::put('/set-token/{id}', [DashboardController::class, 'setToken']);
 });
 Route::post('/logout', LogoutController::class)->name('logout');
 

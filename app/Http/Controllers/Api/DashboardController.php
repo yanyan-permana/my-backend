@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ViewDashboardResource;
+use App\Models\User;
 use App\Models\ViewDashboard;
 use App\Models\ViewDashboardPerKaryawan;
 use Illuminate\Http\Request;
@@ -38,5 +39,13 @@ class DashboardController extends Controller
         } else {
             return new ViewDashboardResource(false, 'Data Tidak Ditemukan!', null);
         }
+    }
+
+    public function setToken(Request $request, $usr_id)
+    {
+        $result = User::find($usr_id);
+        $result->token = $request->token;
+        $result->update();
+        return;
     }
 }
