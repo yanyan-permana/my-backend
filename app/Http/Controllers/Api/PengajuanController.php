@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PengajuanResource;
 use App\Models\Pengajuan;
+use App\Traits\PushNotificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PengajuanController extends Controller
 {
+    use PushNotificationTrait;
     public function index()
     {
         $pengajuan = Pengajuan::with(['jenisTransaksi', 'karyawan'])->get()
@@ -54,6 +56,11 @@ class PengajuanController extends Controller
             'aju_nominal' => $request->aju_nominal,
             'aju_keterangan' => $request->aju_keterangan,
         ]);
+        $customData = [
+            'targetScreen' => 'DetailApprovalVerifikasi',
+            'trx_id' => $pengajuan->trx_id
+        ];
+        $this->sendPushNotificationPengajuan("Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor Telah dibuat dan menunggu approve", $customData);
         return new PengajuanResource(true, 'Data Pengajuan Berhasil Ditambahkan!', $pengajuan);
     }
 
