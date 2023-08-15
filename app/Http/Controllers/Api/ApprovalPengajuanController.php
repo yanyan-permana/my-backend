@@ -28,7 +28,7 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve', '');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->orderBy('aju_id', 'desc');
         if ($statusApprove === '') {
             $dataPengajuan->whereDoesntHave('approval', function ($query) {
                 $query->whereNotNull('aju_app_ver_status')
@@ -68,7 +68,7 @@ class ApprovalPengajuanController extends Controller
 
         $jenisApproval = JenisApproval::where('app_jenis', 'app_keuangan')->first();
         $minNom = $jenisApproval->app_min_nom;
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->has('approval');
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->has('approval')->orderBy('aju_id', 'desc');
         $dataPengajuan->where('aju_nominal', '>=', $minNom);
 
         $dataPengajuan->whereDoesntHave('approval', function ($query) {
@@ -109,7 +109,7 @@ class ApprovalPengajuanController extends Controller
         $jenisApproval = JenisApproval::where('app_jenis', 'app_direksi')->first();
         $minNom = $jenisApproval->app_min_nom;
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->has('approval');
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->has('approval')->orderBy('aju_id', 'desc');
         $dataPengajuan->where('aju_nominal', '>=', $minNom);
 
         $dataPengajuan->whereDoesntHave('approval', function ($query) {
