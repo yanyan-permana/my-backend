@@ -46,6 +46,6 @@ class DashboardController extends Controller
         $result = User::find($usr_id);
         $result->token = $request->token;
         $result->update();
-        return;
+        return new ViewDashboardResource(true, 'Data Ditemukan!', $result);
     }
 }
