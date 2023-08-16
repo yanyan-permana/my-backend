@@ -11,13 +11,13 @@ class HistoryPengajuanController extends Controller
 {
     public function index()
     {
-        $result = ViewHistoryPengajuan::orderBy('aju_id', 'desc')->all();
+        $result = ViewHistoryPengajuan::orderBy('aju_tanggal', 'desc')->all();
         return new HistoryPengajuanResource(true, 'List Data History Pengajuan', $result);
     }
 
     public function getByUser($id)
     {
-        $result = ViewHistoryPengajuan::where('kry_id', $id)->orderBy('aju_id', 'desc')->get();
+        $result = ViewHistoryPengajuan::where('kry_id', $id)->orderBy('aju_tanggal', 'desc')->get();
         if ($result) {
             return new HistoryPengajuanResource(true, 'Data History Pengajuan Ditemukan!', $result);
         } else {
