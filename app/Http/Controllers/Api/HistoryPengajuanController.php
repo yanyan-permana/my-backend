@@ -11,7 +11,7 @@ class HistoryPengajuanController extends Controller
 {
     public function index()
     {
-        $result = ViewHistoryPengajuan::all()->orderBy('aju_tanggal', 'desc');
+        $result = ViewHistoryPengajuan::all();
         return new HistoryPengajuanResource(true, 'List Data History Pengajuan', $result);
     }
 
