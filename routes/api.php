@@ -89,4 +89,4 @@ Route::post('/logout', LogoutController::class)->name('logout');
 
 Route::post('/lupa-password', [ResetPasswordController::class, 'index']);
 Route::post('/cek-top', [ResetPasswordController::class, 'checkOtp']);
-Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);
+Route::put('/reset-password', [ResetPasswordController::class, 'resetPassword']);
