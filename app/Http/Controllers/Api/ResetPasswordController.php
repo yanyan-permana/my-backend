@@ -32,7 +32,6 @@ class ResetPasswordController extends Controller
 
             if ($existingRecord) {
                 DB::table('password_resets')->update([
-                    'email' => $request->email,
                     'token' => $otp,
                     'created_at' => Carbon::now()
                 ]);
