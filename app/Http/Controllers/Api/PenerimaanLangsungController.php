@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PenerimaanLangsungResource;
+use App\Models\BuktiTransaksi;
 use App\Models\PenerimaanLangsung;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PenerimaanLangsungController extends Controller
@@ -40,6 +42,7 @@ class PenerimaanLangsungController extends Controller
             'tpl_nomor' => 'required|unique:App\Models\PenerimaanLangsung,tpl_nomor',
             'tpl_tanggal' => 'required',
             'tpl_nominal' => 'required',
+            'file.*' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:2048'
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -56,7 +59,27 @@ class PenerimaanLangsungController extends Controller
             'tpl_nominal' => $request->tpl_nominal,
             'tpl_keterangan' => $request->tpl_keterangan,
         ]);
-        return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Ditambahkan!', $penerimaanLangsung);
+
+        if ($request->hasFile('file')) {
+            $uploadedFiles = $request->file('file');
+            foreach ($uploadedFiles as $uploadedFile) {
+                $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                $filePath = $uploadedFile->storeAs('public/uploads', $filename);
+
+                $fileData = [
+                    'trans_id' => $penerimaanLangsung->tpl_id,
+                    'trans_jns' => $penerimaanLangsung->trans_jns,
+                    'bkt_file_nama' => $filename,
+                    'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
+                    'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
+                    'bkt_file_ukuran' => $uploadedFile->getSize(),
+                    'bkt_file_folder' => $filePath,
+                ];
+
+                $bukti = BuktiTransaksi::create($fileData);
+            }
+        }
+        return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Ditambahkan!', ['penerimaan' => $penerimaanLangsung, 'bukti' => $bukti]);
     }
 
     public function show($id)
@@ -104,7 +127,29 @@ class PenerimaanLangsungController extends Controller
             'tpl_nominal' => $request->tpl_nominal,
             'tpl_keterangan' => $request->tpl_keterangan,
         ]);
-        return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Diubah!', $penerimaanLangsung);
+
+        $bukti = [];
+
+        if ($request->hasFile('file')) {
+            $uploadedFiles = $request->file('file');
+            foreach ($uploadedFiles as $uploadedFile) {
+                $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                $filePath = $uploadedFile->storeAs('public/uploads', $filename);
+
+                $fileData = [
+                    'trans_id' => $penerimaanLangsung->tgjwb_id,
+                    'trans_jns' => 'penerimaan',
+                    'bkt_file_nama' => $filename,
+                    'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
+                    'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
+                    'bkt_file_ukuran' => $uploadedFile->getSize(),
+                    'bkt_file_folder' => $filePath,
+                ];
+
+                $bukti = BuktiTransaksi::create($fileData);
+            }
+        }
+        return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Diubah!', ['penerimaan' => $penerimaanLangsung, 'bukti' => $bukti]);
     }
 
     public function destroy($id)
@@ -112,6 +157,11 @@ class PenerimaanLangsungController extends Controller
         $penerimaanLangsung = PenerimaanLangsung::where('tpl_id', $id)->first();
         if ($penerimaanLangsung) {
             $penerimaanLangsung->delete();
+            $buktiFiles = BuktiTransaksi::where('trans_id', $penerimaanLangsung->tpl_id)->get();
+            foreach ($buktiFiles as $file) {
+                Storage::delete($file->bkt_file_folder);
+            }
+            BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tgjwb_id, 'trans_jns' => 'penerimaan'])->delete();
             return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Dihapus!', null);
         } else {
             return new PenerimaanLangsungResource(false, 'Data Penerimaan Langsung Tidak Ditemukan!', null);

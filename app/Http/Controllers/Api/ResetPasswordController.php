@@ -22,18 +22,34 @@ class ResetPasswordController extends Controller
 
         $mailData = [
             'title' => 'Reset Password',
-            'body' => 'Kode OTP ' . $otp,
+            'body' => $otp,
         ];
 
-        DB::table('password_resets')->insert([
-            'email' => $request->email,
-            'token' => $otp,
-            'created_at' => Carbon::now()
-        ]);
+        $exitingEmail = User::where('usr_email', $request->email)->first();
 
-        Mail::to($email)->send(new SendMail($mailData));
+        if ($exitingEmail) {
+            $existingRecord = DB::table('password_resets')->where('email', $request->email)->first();
 
-        return new ResetPasswordResource(true, 'Kode OTP telah dikirimkan ke email', null);
+            if ($existingRecord) {
+                DB::table('password_resets')->update([
+                    'email' => $request->email,
+                    'token' => $otp,
+                    'created_at' => Carbon::now()
+                ]);
+            } else {
+                DB::table('password_resets')->insert([
+                    'email' => $request->email,
+                    'token' => $otp,
+                    'created_at' => Carbon::now()
+                ]);
+            }
+
+            Mail::to($email)->send(new SendMail($mailData));
+
+            return new ResetPasswordResource(true, 'Kode OTP telah dikirimkan ke email', $email);
+        } else {
+            return new ResetPasswordResource(false, 'Email tidak terdaftar', null);
+        }
     }
 
     public function checkOtp(Request $request)

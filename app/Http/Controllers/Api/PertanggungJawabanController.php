@@ -162,7 +162,7 @@ class PertanggungJawabanController extends Controller
             foreach ($buktiFiles as $file) {
                 Storage::delete($file->bkt_file_folder);
             }
-            BuktiTransaksi::where('trans_id', $pertanggungJawaban->tgjwb_id)->delete();
+            BuktiTransaksi::where(['trans_id' => $pertanggungJawaban->tgjwb_id, 'trans_jns' => $pertanggungJawaban->trans_jns])->delete();
             return new PertanggungJawabanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
             return new PertanggungJawabanResource(false, 'Data Pengajuan Tidak Ditemukan!', null);

@@ -51,4 +51,9 @@ class Pengajuan extends Model
     {
         return $this->hasOne(ApprovalPengajuan::class, 'aju_id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'kry_id');
+    }
 }

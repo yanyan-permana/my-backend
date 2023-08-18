@@ -8,12 +8,14 @@ use App\Models\ApprovalPengajuan;
 use App\Models\JenisApproval;
 use App\Models\PejabatApproval;
 use App\Models\Pengajuan;
+use App\Traits\PushNotificationTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ApprovalPengajuanController extends Controller
 {
+    use PushNotificationTrait;
     public function getPengajuanById($ajuId)
     {
         $dataPengajuan = Pengajuan::where('aju_id', $ajuId)->with(['approval', 'jenisTransaksi', 'karyawan'])->first();
@@ -195,11 +197,25 @@ class ApprovalPengajuanController extends Controller
                 $approveStatus === 'ditolak' && $approval->is_complete = 'ditolak';
                 $approval->save();
                 if ($approveStatus === 'ditolak') {
+                    $customData = [
+                        'targetScreen' => 'HistoryPengajuanDrawer',
+                    ];
+                    $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor ditolak verifikasi, $approveKeterangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval verifikasi ditolak', $approval);
                 }
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
+                    $customData = [
+                        'targetScreen' => 'ApprovalKeuanganDrawer',
+                    ];
+                    $this->sendPushNotificationKeuangan("Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor Telah di setujui oleh verifikasi dan menunggu approve oleh keuangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval verifikasi berhasil, persetujuan dari Keuangan diperlukan', $approval);
                 } else {
+                    if ($approveStatus === 'disetujui') {
+                        $customData = [
+                            'targetScreen' => 'HistoryPengajuanDrawer',
+                        ];
+                        $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor disetujui verifikasi, tunggu realisasi dari keuangan", $customData);
+                    }
                     $approval->is_complete = $approveStatus === 'disetujui' ? "selesai" : "ditolak";
                     $approval->save();
 
@@ -253,7 +269,7 @@ class ApprovalPengajuanController extends Controller
                     ->firstOrNew(['aju_id' => $ajuId]);
 
                 if ($approval->aju_app_ver_status === null) {
-                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di approve oleh verifikasi', $approval);
+                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di setujui oleh verifikasi', $approval);
                 }
 
                 if ($approval->aju_app_keu_status === 'disetujui' || $approval->aju_app_keu_status === 'ditolak') {
@@ -269,12 +285,26 @@ class ApprovalPengajuanController extends Controller
                 $approval->save();
 
                 if ($approveStatus === 'ditolak') {
+                    $customData = [
+                        'targetScreen' => 'HistoryPengajuanDrawer',
+                    ];
+                    $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor ditolak keuangan, $approveKeterangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval Keuangan ditolak', $approval);
                 }
 
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
+                    $customData = [
+                        'targetScreen' => 'ApprovalDireksiDrawer',
+                    ];
+                    $this->sendPushNotificationDireksi("Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor Telah di setujui oleh keuangan dan menunggu approve oleh direksi", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval Keuangan berhasil, persetujuan dari Direksi diperlukan', $approval);
                 } else {
+                    if ($approveStatus === 'disetujui') {
+                        $customData = [
+                            'targetScreen' => 'HistoryPengajuanDrawer',
+                        ];
+                        $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor disetujui keuangan, tunggu realisasi dari keuangan", $customData);
+                    }
                     $approval->is_complete = $approveStatus === 'disetujui' ? "selesai" : "ditolak";
                     $approval->save();
 
@@ -328,7 +358,7 @@ class ApprovalPengajuanController extends Controller
                     ->firstOrNew(['aju_id' => $ajuId]);
 
                 if ($approval->aju_app_ver_status === null && $approval->aju_app_keu_status === null) {
-                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di approve oleh Keuangan', $approval);
+                    return new ApprovalPengajuanResource(false, 'Pengajuan belum di setujui oleh Keuangan', $approval);
                 }
 
                 if ($approval->aju_app_dir_status === 'disetujui' || $approval->aju_app_dir_status === 'ditolak') {
@@ -344,9 +374,19 @@ class ApprovalPengajuanController extends Controller
                 $approval->save();
 
                 if ($approveStatus === 'ditolak') {
+                    $customData = [
+                        'targetScreen' => 'HistoryPengajuanDrawer',
+                    ];
+                    $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor ditolak direksi, $approveKeterangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval Direksi ditolak', $approval);
                 }
 
+                if ($approveStatus === 'disetujui') {
+                    $customData = [
+                        'targetScreen' => 'HistoryPengajuanDrawer',
+                    ];
+                    $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor disetujui direksi, tunggu realisasi dari keuangan", $customData);
+                }
                 return new ApprovalPengajuanResource(true, 'Approval Selesai', $approval);
             }
         } else {

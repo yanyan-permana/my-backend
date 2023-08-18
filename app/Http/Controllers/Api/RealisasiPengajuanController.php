@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RealisasiPengajuanResource;
 use App\Models\ApprovalPengajuan;
 use App\Models\RealisasiPengajuan;
+use App\Traits\PushNotificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class RealisasiPengajuanController extends Controller
 {
+    use PushNotificationTrait;
     public function index()
     {
         $realisasi = RealisasiPengajuan::with(['karyawan', 'approval.pengajuan.jenisTransaksi'])->get()
@@ -59,6 +61,17 @@ class RealisasiPengajuanController extends Controller
             'real_nominal' => $request->real_nominal,
             'real_keterangan' => $request->real_keterangan,
         ]);
+
+        if ($realisasi) {
+            $data = ApprovalPengajuan::where('aju_app_id', $realisasi->aju_app_id)->with('pengajuan')->first();
+
+            $customData = [
+                'targetScreen' => 'HistoryPengajuanDrawer',
+            ];
+            $nomorPengajuan = $data->pengajuan->aju_nomor;
+            $this->sendPushNotificationKaryawan($data->pengajuan->kry_id, "Realisasi", "Pengajuan nomor $nomorPengajuan  telah direalisasikan", $customData);
+        }
+
         return new RealisasiPengajuanResource(true, 'Data Realisasi Berhasil Ditambahkan!', $realisasi);
     }
 
