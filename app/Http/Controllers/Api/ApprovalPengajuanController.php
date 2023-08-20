@@ -207,6 +207,7 @@ class ApprovalPengajuanController extends Controller
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
                     $customData = [
                         'targetScreen' => 'ApprovalKeuanganDrawer',
+                        'hak_akses' => 'keuangan',
                     ];
                     $this->sendPushNotificationKeuangan("Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor Telah di setujui oleh verifikasi dan menunggu approve oleh keuangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval verifikasi berhasil, persetujuan dari Keuangan diperlukan', $approval);
@@ -214,6 +215,7 @@ class ApprovalPengajuanController extends Controller
                     if ($approveStatus === 'disetujui') {
                         $customData = [
                             'targetScreen' => 'HistoryPengajuanDrawer',
+                            'hak_akses' => 'keuangan',
                         ];
                         $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor disetujui verifikasi, tunggu realisasi dari keuangan", $customData);
                     }
@@ -297,6 +299,7 @@ class ApprovalPengajuanController extends Controller
                 if ($nominalPengajuan > $jenisApproval->app_max_nom) {
                     $customData = [
                         'targetScreen' => 'ApprovalDireksiDrawer',
+                        'hak_akses' => 'direksi'
                     ];
                     $this->sendPushNotificationDireksi("Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor Telah di setujui oleh keuangan dan menunggu approve oleh direksi", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval Keuangan berhasil, persetujuan dari Direksi diperlukan', $approval);
@@ -304,6 +307,7 @@ class ApprovalPengajuanController extends Controller
                     if ($approveStatus === 'disetujui') {
                         $customData = [
                             'targetScreen' => 'HistoryPengajuanDrawer',
+                            'hak_akses' => 'direksi'
                         ];
                         $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor disetujui keuangan, tunggu realisasi dari keuangan", $customData);
                     }
@@ -378,6 +382,7 @@ class ApprovalPengajuanController extends Controller
                 if ($approveStatus === 'ditolak') {
                     $customData = [
                         'targetScreen' => 'HistoryPengajuanDrawer',
+                        'hak_akses' => 'karyawan'
                     ];
                     $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor ditolak direksi, $approveKeterangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval Direksi ditolak', $approval);
@@ -386,6 +391,7 @@ class ApprovalPengajuanController extends Controller
                 if ($approveStatus === 'disetujui') {
                     $customData = [
                         'targetScreen' => 'HistoryPengajuanDrawer',
+                        'hak_akses' => 'karyawan'
                     ];
                     $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor disetujui direksi, tunggu realisasi dari keuangan", $customData);
                 }

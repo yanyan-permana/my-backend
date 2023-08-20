@@ -67,6 +67,7 @@ class RealisasiPengajuanController extends Controller
 
             $customData = [
                 'targetScreen' => 'HistoryPengajuanDrawer',
+                'hak_akses' => 'karyawan'
             ];
             $nomorPengajuan = $data->pengajuan->aju_nomor;
             $this->sendPushNotificationKaryawan($data->pengajuan->kry_id, "Realisasi", "Pengajuan nomor $nomorPengajuan  telah direalisasikan", $customData);
