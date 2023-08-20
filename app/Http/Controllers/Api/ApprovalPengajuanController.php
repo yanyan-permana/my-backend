@@ -199,6 +199,7 @@ class ApprovalPengajuanController extends Controller
                 if ($approveStatus === 'ditolak') {
                     $customData = [
                         'targetScreen' => 'HistoryPengajuanDrawer',
+                        'hak_akses' => 'keuangan',
                     ];
                     $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor ditolak verifikasi, $approveKeterangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval verifikasi ditolak', $approval);
@@ -287,6 +288,7 @@ class ApprovalPengajuanController extends Controller
                 if ($approveStatus === 'ditolak') {
                     $customData = [
                         'targetScreen' => 'HistoryPengajuanDrawer',
+                        'hak_akses' => 'direksi',
                     ];
                     $this->sendPushNotificationKaryawan($pengajuan->kry_id, "Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor ditolak keuangan, $approveKeterangan", $customData);
                     return new ApprovalPengajuanResource(true, 'Approval Keuangan ditolak', $approval);

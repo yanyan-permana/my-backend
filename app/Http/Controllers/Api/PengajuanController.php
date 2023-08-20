@@ -58,6 +58,7 @@ class PengajuanController extends Controller
         ]);
         $customData = [
             'targetScreen' => 'ApprovalVerifikasiDrawer',
+            'hak_akses' => 'verifikasi',
         ];
         $this->sendPushNotificationVerifikasi("Pengajuan", "Pengajuan nomor $pengajuan->aju_nomor Telah dibuat dan menunggu approve", $customData);
         return new PengajuanResource(true, 'Data Pengajuan Berhasil Ditambahkan!', $pengajuan);
