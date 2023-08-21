@@ -61,12 +61,12 @@ class KaryawanController extends Controller
         //         'kry_jabatan' => 'required',
         //     ]);
         // } else {
-            $validator = Validator::make($request->all(), [
-                'kry_nik' => 'required|unique:App\Models\karyawan, kry_nik',
-                'kry_nama' => 'required',
-                'kry_bagian' => 'required',
-                'kry_jabatan' => 'required',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'kry_nik' => 'required|unique:App\Models\karyawan,kry_nik',
+            'kry_nama' => 'required',
+            'kry_bagian' => 'required',
+            'kry_jabatan' => 'required',
+        ]);
         // }
         // jika validasi gagal
         if ($validator->fails()) {
