@@ -53,21 +53,21 @@ class KaryawanController extends Controller
     public function update(Request $request, Karyawan $karyawan)
     {
         // validasi
-        // if ($karyawan->kry_nik === $request->kry_nik) {
-        //     $validator = Validator::make($request->all(), [
-        //         'kry_nik' => 'required',
-        //         'kry_nama' => 'required',
-        //         'kry_bagian' => 'required',
-        //         'kry_jabatan' => 'required',
-        //     ]);
-        // } else {
-        $validator = Validator::make($request->all(), [
-            'kry_nik' => 'required|unique:App\Models\karyawan,kry_nik',
-            'kry_nama' => 'required',
-            'kry_bagian' => 'required',
-            'kry_jabatan' => 'required',
-        ]);
-        // }
+        if ($karyawan->kry_nik === $request->kry_nik) {
+            $validator = Validator::make($request->all(), [
+                'kry_nik' => 'required',
+                'kry_nama' => 'required',
+                'kry_bagian' => 'required',
+                'kry_jabatan' => 'required',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'kry_nik' => 'required|unique:App\Models\karyawan,kry_nik',
+                'kry_nama' => 'required',
+                'kry_bagian' => 'required',
+                'kry_jabatan' => 'required',
+            ]);
+        }
         // jika validasi gagal
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
