@@ -66,6 +66,8 @@ class PertanggungJawabanController extends Controller
                 // $filePath = $uploadedFile->storeAs('public/uploads', $filename);
                 $filename = time() . '_' . $uploadedFile->getClientOriginalName();
                 $uploadedFile->move($folderUploads, $filename);
+                $filePath = $folderUploads . '/' . $filename;
+                $fileSizeInBytes = filesize($filePath);
 
                 $fileData = [
                     'trans_id' => $pertanggungJawaban->tgjwb_id,
@@ -73,8 +75,8 @@ class PertanggungJawabanController extends Controller
                     'bkt_file_nama' => $filename,
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
-                    'bkt_file_ukuran' => $uploadedFile->getSize(),
-                    'bkt_file_folder' => $folderUploads,
+                    'bkt_file_ukuran' => $fileSizeInBytes,
+                    'bkt_file_folder' => 'public/uploads/' . $filename,
                 ];
 
                 $bukti = BuktiTransaksi::create($fileData);
@@ -112,7 +114,6 @@ class PertanggungJawabanController extends Controller
         // validasi
         $validator = Validator::make($request->all(), [
             'real_id' => 'required',
-            'trans_jns' => 'required',
             'tgjwb_nomor' => 'required|exists:App\Models\PertanggungJawaban,tgjwb_nomor',
             'tgjwb_tanggal' => 'required',
             'tgjwb_nominal' => 'required',
@@ -126,7 +127,7 @@ class PertanggungJawabanController extends Controller
 
         $pertanggungJawaban->update([
             'real_id' => $request->real_id,
-            'trans_jns' => $request->trans_jns,
+            'trans_jns' => 'pengeluaran',
             'tgjwb_nomor' => $request->tgjwb_nomor,
             'tgjwb_tanggal' => $request->tgjwb_tanggal,
             'tgjwb_nominal' => $request->tgjwb_nominal,
@@ -137,18 +138,23 @@ class PertanggungJawabanController extends Controller
 
         if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
+            $folderUploads = public_path('uploads');
             foreach ($uploadedFiles as $uploadedFile) {
+                // $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                // $filePath = $uploadedFile->storeAs('public/uploads', $filename);
                 $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-                $filePath = $uploadedFile->storeAs('public/uploads', $filename);
+                $uploadedFile->move($folderUploads, $filename);
+                $filePath = $folderUploads . '/' . $filename;
+                $fileSizeInBytes = filesize($filePath);
 
                 $fileData = [
                     'trans_id' => $pertanggungJawaban->tgjwb_id,
-                    'trans_jns' => 'pengeluaran',
+                    'trans_jns' => $pertanggungJawaban->trans_jns,
                     'bkt_file_nama' => $filename,
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
-                    'bkt_file_ukuran' => $uploadedFile->getSize(),
-                    'bkt_file_folder' => $filePath,
+                    'bkt_file_ukuran' => $fileSizeInBytes,
+                    'bkt_file_folder' => 'public/uploads/' . $filename,
                 ];
 
                 $bukti = BuktiTransaksi::create($fileData);
@@ -162,7 +168,7 @@ class PertanggungJawabanController extends Controller
         $pertanggungJawaban = PertanggungJawaban::where('tgjwb_id', $id)->first();
         if ($pertanggungJawaban) {
             $pertanggungJawaban->delete();
-            $buktiFiles = BuktiTransaksi::where('trans_id', $pertanggungJawaban->tgjwb_id)->get();
+            $buktiFiles = BuktiTransaksi::where(['trans_id' => $pertanggungJawaban->tgjwb_id, 'trans_jns' => $pertanggungJawaban->trans_jns])->get();
             foreach ($buktiFiles as $file) {
                 Storage::delete($file->bkt_file_folder);
             }

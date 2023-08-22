@@ -173,7 +173,7 @@ class PenerimaanLangsungController extends Controller
             foreach ($buktiFiles as $file) {
                 Storage::delete($file->bkt_file_folder);
             }
-            BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tgjwb_id, 'trans_jns' => 'penerimaan'])->delete();
+            BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tgjwb_id, 'trans_jns' => $penerimaanLangsung->trans_jns])->delete();
             return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Dihapus!', null);
         } else {
             return new PenerimaanLangsungResource(false, 'Data Penerimaan Langsung Tidak Ditemukan!', null);
