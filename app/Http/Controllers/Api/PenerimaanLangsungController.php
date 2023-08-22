@@ -60,7 +60,8 @@ class PenerimaanLangsungController extends Controller
             'tpl_nominal' => $request->tpl_nominal,
             'tpl_keterangan' => $request->tpl_keterangan,
         ]);
-
+        
+        $bukti = [];
         if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
             $folderUploads = public_path('uploads');

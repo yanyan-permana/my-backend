@@ -57,7 +57,7 @@ class PertanggungJawabanController extends Controller
             'tgjwb_nominal' => $request->tgjwb_nominal,
             'tgjwb_keterangan' => $request->tgjwb_keterangan,
         ]);
-
+        $bukti = [];
         if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
             $folderUploads = public_path('uploads');
