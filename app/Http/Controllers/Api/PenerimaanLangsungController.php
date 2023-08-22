@@ -77,7 +77,7 @@ class PenerimaanLangsungController extends Controller
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
                     'bkt_file_ukuran' => $uploadedFile->getSize(),
-                    'bkt_file_folder' => $folderUploads,
+                    'bkt_file_folder' => 'public/uploads/' . $filename,
                 ];
 
                 $bukti = BuktiTransaksi::create($fileData);
@@ -151,7 +151,7 @@ class PenerimaanLangsungController extends Controller
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
                     'bkt_file_ukuran' => $uploadedFile->getSize(),
-                    'bkt_file_folder' => $folderUploads,
+                    'bkt_file_folder' => 'public/uploads/' . $filename,
                 ];
 
                 $bukti = BuktiTransaksi::create($fileData);
