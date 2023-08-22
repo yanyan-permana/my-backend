@@ -63,9 +63,12 @@ class PenerimaanLangsungController extends Controller
 
         if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
+            $folderUploads = public_path('uploads');
             foreach ($uploadedFiles as $uploadedFile) {
+                // $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                // $filePath = $uploadedFile->storeAs('public/uploads', $filename);
                 $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-                $filePath = $uploadedFile->storeAs('public/uploads', $filename);
+                $uploadedFile->move($folderUploads, $filename);
 
                 $fileData = [
                     'trans_id' => $penerimaanLangsung->tpl_id,
@@ -74,7 +77,7 @@ class PenerimaanLangsungController extends Controller
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
                     'bkt_file_ukuran' => $uploadedFile->getSize(),
-                    'bkt_file_folder' => $filePath,
+                    'bkt_file_folder' => $folderUploads,
                 ];
 
                 $bukti = BuktiTransaksi::create($fileData);
