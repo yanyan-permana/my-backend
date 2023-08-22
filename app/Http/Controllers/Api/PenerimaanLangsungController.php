@@ -171,6 +171,8 @@ class PenerimaanLangsungController extends Controller
             $penerimaanLangsung->delete();
             $buktiFiles = BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tpl_id, 'trans_jns' => $penerimaanLangsung->trans_jns])->get();
             foreach ($buktiFiles as $file) {
+                $filePath = public_path('uploads/' . $file->bkt_file_nama);
+                unlink($filePath);
                 Storage::delete($file->bkt_file_folder);
             }
             BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tgjwb_id, 'trans_jns' => $penerimaanLangsung->trans_jns])->delete();

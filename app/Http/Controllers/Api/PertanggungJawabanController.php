@@ -170,6 +170,8 @@ class PertanggungJawabanController extends Controller
             $pertanggungJawaban->delete();
             $buktiFiles = BuktiTransaksi::where(['trans_id' => $pertanggungJawaban->tgjwb_id, 'trans_jns' => $pertanggungJawaban->trans_jns])->get();
             foreach ($buktiFiles as $file) {
+                $filePath = public_path('uploads/' . $file->bkt_file_nama);
+                unlink($filePath);
                 Storage::delete($file->bkt_file_folder);
             }
             BuktiTransaksi::where(['trans_id' => $pertanggungJawaban->tgjwb_id, 'trans_jns' => $pertanggungJawaban->trans_jns])->delete();
