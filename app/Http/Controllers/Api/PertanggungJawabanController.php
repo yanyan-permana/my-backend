@@ -60,9 +60,12 @@ class PertanggungJawabanController extends Controller
 
         if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
+            $folderUploads = public_path('uploads');
             foreach ($uploadedFiles as $uploadedFile) {
+                // $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                // $filePath = $uploadedFile->storeAs('public/uploads', $filename);
                 $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-                $filePath = $uploadedFile->storeAs('public/uploads', $filename);
+                $uploadedFile->move($folderUploads, $filename);
 
                 $fileData = [
                     'trans_id' => $pertanggungJawaban->tgjwb_id,
@@ -71,7 +74,7 @@ class PertanggungJawabanController extends Controller
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
                     'bkt_file_ukuran' => $uploadedFile->getSize(),
-                    'bkt_file_folder' => $filePath,
+                    'bkt_file_folder' => $folderUploads,
                 ];
 
                 $bukti = BuktiTransaksi::create($fileData);
@@ -188,5 +191,13 @@ class PertanggungJawabanController extends Controller
         } else {
             return new PertanggungJawabanResource(false, 'Realisasi Nomor Tidak Ditemukan!', null);
         }
+    }
+
+    public function setgambar(Request $request)
+    {
+        $folderUploads = public_path('uploads');
+        $gambar = $request->file('gambar');
+        $namaGambar = time() . '_' . $gambar->getClientOriginalName();
+        $gambar->move($folderUploads, $namaGambar);
     }
 }
