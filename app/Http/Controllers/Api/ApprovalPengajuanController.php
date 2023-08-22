@@ -70,19 +70,18 @@ class ApprovalPengajuanController extends Controller
 
         $jenisApproval = JenisApproval::where('app_jenis', 'app_keuangan')->first();
         $minNom = $jenisApproval->app_min_nom;
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->has('approval')->orderBy('aju_id', 'desc');
-        $dataPengajuan->where('aju_nominal', '>=', $minNom);
-
-        $dataPengajuan->whereDoesntHave('approval', function ($query) {
-            $query->whereNotNull('aju_app_ver_status')
-                ->whereNotNull('aju_app_keu_status');
-        })
-            ->where(function ($query) {
-                $query->whereDoesntHave('approval', function ($subquery) {
-                    $subquery->where('is_complete', 'ditolak')
-                        ->orWhere('is_complete', 'selesai');
-                });
-            });
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
+            ->has('approval')
+            ->where('aju_nominal', '>=', $minNom)
+            ->whereHas('approval', function ($query) {
+                $query->whereNotNull('aju_app_ver_status')
+                    ->whereNull('aju_app_keu_status');
+            })
+            ->whereDoesntHave('approval', function ($query) {
+                $query->where('is_complete', 'ditolak')
+                    ->orWhere('is_complete', 'selesai');
+            })
+            ->orderBy('aju_id', 'desc');
         // ->orWhere(function ($query) {
         //     $query->whereDoesntHave('approval');
         // });
@@ -111,20 +110,19 @@ class ApprovalPengajuanController extends Controller
         $jenisApproval = JenisApproval::where('app_jenis', 'app_direksi')->first();
         $minNom = $jenisApproval->app_min_nom;
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->has('approval')->orderBy('aju_id', 'desc');
-        $dataPengajuan->where('aju_nominal', '>=', $minNom);
-
-        $dataPengajuan->whereDoesntHave('approval', function ($query) {
-            $query->whereNotNull('aju_app_ver_status')
-                ->whereNotNull('aju_app_keu_status')
-                ->orWhereNotNull('aju_app_dir_status');
-        })
-            ->where(function ($query) {
-                $query->whereDoesntHave('approval', function ($subquery) {
-                    $subquery->where('is_complete', 'ditolak')
-                        ->orWhere('is_complete', 'selesai');
-                });
-            });
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])
+            ->has('approval')
+            ->where('aju_nominal', '>=', $minNom)
+            ->whereHas('approval', function ($query) {
+                $query->whereNotNull('aju_app_ver_status')
+                    ->whereNotNull('aju_app_keu_status')
+                    ->whereNull('aju_app_dir_status');
+            })
+            ->whereDoesntHave('approval', function ($query) {
+                $query->where('is_complete', 'ditolak')
+                    ->orWhere('is_complete', 'selesai');
+            })
+            ->orderBy('aju_id', 'desc');
         // ->orWhere(function ($query) {
         //     $query->whereDoesntHave('approval');
         // });
