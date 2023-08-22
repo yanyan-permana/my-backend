@@ -159,7 +159,7 @@ class PenerimaanLangsungController extends Controller
         $penerimaanLangsung = PenerimaanLangsung::where('tpl_id', $id)->first();
         if ($penerimaanLangsung) {
             $penerimaanLangsung->delete();
-            $buktiFiles = BuktiTransaksi::where('trans_id', $penerimaanLangsung->tpl_id)->get();
+            $buktiFiles = BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tpl_id, 'trans_jns' => $penerimaanLangsung->trans_jns])->get();
             foreach ($buktiFiles as $file) {
                 Storage::delete($file->bkt_file_folder);
             }
