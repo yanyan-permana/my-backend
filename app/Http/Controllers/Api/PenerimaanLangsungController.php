@@ -69,6 +69,8 @@ class PenerimaanLangsungController extends Controller
                 // $filePath = $uploadedFile->storeAs('public/uploads', $filename);
                 $filename = time() . '_' . $uploadedFile->getClientOriginalName();
                 $uploadedFile->move($folderUploads, $filename);
+                $filePath = $folderUploads . '/' . $filename;
+                $fileSizeInBytes = filesize($filePath);
 
                 $fileData = [
                     'trans_id' => $penerimaanLangsung->tpl_id,
@@ -76,7 +78,7 @@ class PenerimaanLangsungController extends Controller
                     'bkt_file_nama' => $filename,
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
-                    'bkt_file_ukuran' => $uploadedFile->getSize(),
+                    'bkt_file_ukuran' => $fileSizeInBytes,
                     'bkt_file_folder' => 'public/uploads/' . $filename,
                 ];
 
@@ -143,6 +145,8 @@ class PenerimaanLangsungController extends Controller
                 // $filePath = $uploadedFile->storeAs('public/uploads', $filename);
                 $filename = time() . '_' . $uploadedFile->getClientOriginalName();
                 $uploadedFile->move($folderUploads, $filename);
+                $filePath = $folderUploads . '/' . $filename;
+                $fileSizeInBytes = filesize($filePath);
 
                 $fileData = [
                     'trans_id' => $penerimaanLangsung->tgjwb_id,
@@ -150,7 +154,7 @@ class PenerimaanLangsungController extends Controller
                     'bkt_file_nama' => $filename,
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
                     'bkt_orig_nama' => $uploadedFile->getClientOriginalName(),
-                    'bkt_file_ukuran' => $uploadedFile->getSize(),
+                    'bkt_file_ukuran' => $fileSizeInBytes,
                     'bkt_file_folder' => 'public/uploads/' . $filename,
                 ];
 
