@@ -31,6 +31,11 @@ class PenerimaanLangsung extends Model
         return $this->belongsTo(JenisTransaksi::class, 'trx_id');
     }
 
+    public function bukti()
+    {
+        return $this->hasMany(BuktiTransaksi::class, 'trans_id', 'tpl_id')->where('trans_jns', 'penerimaan');
+    }
+
     public static function generateTplNumber()
     {
         $latestNumber = static::max('tpl_nomor');

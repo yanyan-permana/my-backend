@@ -42,6 +42,6 @@ class PertanggungJawaban extends Model
     }
     public function bukti()
     {
-        return $this->hasMany(BuktiTransaksi::class, 'trans_id', 'tgjwb_id');
+        return $this->hasMany(BuktiTransaksi::class, 'trans_id', 'tgjwb_id')->where('trans_jns', 'pengeluaran');
     }
 }

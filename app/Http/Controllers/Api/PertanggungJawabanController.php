@@ -15,7 +15,7 @@ class PertanggungJawabanController extends Controller
 {
     public function index()
     {
-        $pertanggungJawaban = PertanggungJawaban::with('realisasi')->get()
+        $pertanggungJawaban = PertanggungJawaban::with('realisasi', 'bukti')->get()
             ->map(function ($data) {
                 return [
                     'real_id' => $data->real_id,
@@ -27,6 +27,7 @@ class PertanggungJawabanController extends Controller
                     'trans_jns' => $data->trans_jns,
                     'real_nomor' => $data->realisasi ? $data->realisasi->real_nomor : null,
                     'real_nominal' => $data->realisasi ? $data->realisasi->real_nominal : null,
+                    'bukti' => $data->bukti,
                 ];
             });
         return new PertanggungJawabanResource(true, 'List Data Realisasi', $pertanggungJawaban);

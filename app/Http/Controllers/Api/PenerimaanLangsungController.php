@@ -14,7 +14,7 @@ class PenerimaanLangsungController extends Controller
 {
     public function index()
     {
-        $penerimaanLangsung = PenerimaanLangsung::with(['user', 'jenisTransaksi'])->get()
+        $penerimaanLangsung = PenerimaanLangsung::with(['user', 'jenisTransaksi', 'bukti'])->get()
             ->map(function ($penerimaanLangsung) {
                 return [
                     'tpl_id' => $penerimaanLangsung->tpl_id,
@@ -28,6 +28,7 @@ class PenerimaanLangsungController extends Controller
                     'updated_at' => $penerimaanLangsung->updated_at,
                     'usr_login' => $penerimaanLangsung->user->usr_login,
                     'trx_nama' => $penerimaanLangsung->jenisTransaksi->trx_nama,
+                    'bukti' => $penerimaanLangsung->bukti,
                 ];
             });
         return new PenerimaanLangsungResource(true, 'List Data Penerimaan Langsung', $penerimaanLangsung);
@@ -84,7 +85,7 @@ class PenerimaanLangsungController extends Controller
 
     public function show($id)
     {
-        $penerimaanLangsung = PenerimaanLangsung::where('tpl_id', $id)->with(['user', 'jenisTransaksi'])->first();
+        $penerimaanLangsung = PenerimaanLangsung::where('tpl_id', $id)->with(['user', 'jenisTransaksi', 'bukti'])->first();
         if ($penerimaanLangsung) {
             $result = [
                 'tpl_id' => $penerimaanLangsung->tpl_id,
@@ -98,6 +99,7 @@ class PenerimaanLangsungController extends Controller
                 'updated_at' => $penerimaanLangsung->updated_at,
                 'usr_login' => $penerimaanLangsung->user->usr_login,
                 'trx_nama' => $penerimaanLangsung->jenisTransaksi->trx_nama,
+                'bukti' => $penerimaanLangsung->bukti,
             ];
             return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Ditemukan!', $result);
         } else {
