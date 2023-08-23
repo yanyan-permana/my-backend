@@ -51,6 +51,8 @@ class PertanggungJawabanController extends Controller
 
         if (PertanggungJawaban::where('tgjwb_nomor', $request->tgjwb_nomor)->exists()) {
             $tgjwb_nomor = PertanggungJawaban::generatePjNumber();
+        } else {
+            $tgjwb_nomor = $request->tgjwb_nomor;
         }
 
         $pertanggungJawaban = PertanggungJawaban::create([

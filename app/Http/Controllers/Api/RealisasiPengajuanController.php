@@ -56,6 +56,8 @@ class RealisasiPengajuanController extends Controller
 
         if (RealisasiPengajuan::where('real_nomor', $request->real_nomor)->exists()) {
             $real_nomor = RealisasiPengajuan::generateRealNumber();
+        } else {
+            $real_nomor = $request->real_nomor;
         }
 
         $realisasi = RealisasiPengajuan::create([

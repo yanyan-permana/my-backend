@@ -51,6 +51,8 @@ class PengajuanController extends Controller
 
         if (Pengajuan::where('aju_nomor', $request->aju_nomor)->exists()) {
             $aju_nomor = Pengajuan::generateAJUNumber();
+        } else {
+            $aju_nomor = $request->aju_nomor;
         }
         // input pengajuan
         $pengajuan = Pengajuan::create([
