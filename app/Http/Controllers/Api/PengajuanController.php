@@ -30,7 +30,7 @@ class PengajuanController extends Controller
                     'created_at' => $pengajuan->created_at,
                     'updated_at' => $pengajuan->updated_at,
                 ];
-            });
+            })->orderBy('aju_tanggal', 'desc');
         return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
     }
 
@@ -105,7 +105,7 @@ class PengajuanController extends Controller
                     'created_at' => $pengajuan->created_at,
                     'updated_at' => $pengajuan->updated_at,
                 ];
-            });
+            })->orderBy('aju_tanggal', 'desc');
         return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
     }
 
@@ -145,12 +145,11 @@ class PengajuanController extends Controller
     {
         $pengajuan = Pengajuan::where('aju_id', $id)->first();
 
-        $cekdata = ApprovalPengajuan::where("aju_id", $id)->first();
-        if ($cekdata) {
-            return new PengajuanResource(false, 'Data pengajuan tidak dapat dihapus karena sudah dalam proses approval!', $pengajuan);
-        }
-
         if ($pengajuan) {
+            $cekdata = ApprovalPengajuan::where("aju_id", $id)->first();
+            if ($cekdata) {
+                return new PengajuanResource(false, 'Data pengajuan tidak dapat dihapus karena sudah dalam proses approval!', $pengajuan);
+            }
             $pengajuan->delete();
             return new PengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);
         } else {
