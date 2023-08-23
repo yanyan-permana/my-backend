@@ -21,13 +21,14 @@ class PertanggungJawaban extends Model
 
     public static function generatePjNumber()
     {
-        $latestNumber = static::max('tgjwb_nomor');
+        $latestNumber = static::select('tgjwb_nomor')
+            ->orderByRaw('CONVERT(SUBSTRING_INDEX(aju_nomor, "PJWB", -1), UNSIGNED) DESC')
+            ->first();
 
         if ($latestNumber) {
-            // Ambil angka dari nomor urut terakhir
-            $number = intval(substr($latestNumber, 3)) + 1;
+            $latestNumber = intval(substr($latestNumber->tgjwb_nomor, 4));
+            $number = $latestNumber + 1;
         } else {
-            // Jika tidak ada nomor urut sebelumnya, mulai dari 1
             $number = 1;
         }
 

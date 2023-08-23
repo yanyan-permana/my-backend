@@ -44,7 +44,7 @@ class RealisasiPengajuanController extends Controller
         $validator = Validator::make($request->all(), [
             'aju_app_id' => 'required',
             'real_pjbt_id' => 'required',
-            'real_nomor' => 'required|unique:App\Models\RealisasiPengajuan, real_nomor',
+            'real_nomor' => 'required',
             'real_tanggal' => 'required',
             'real_nominal' => 'required',
             'real_keterangan' => 'nullable|string',
@@ -54,10 +54,14 @@ class RealisasiPengajuanController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        if (RealisasiPengajuan::where('real_nomor', $request->real_nomor)->exists()) {
+            $real_nomor = RealisasiPengajuan::generateRealNumber();
+        }
+
         $realisasi = RealisasiPengajuan::create([
             'aju_app_id' => $request->aju_app_id,
             'real_pjbt_id' => $request->real_pjbt_id,
-            'real_nomor' => $request->real_nomor,
+            'real_nomor' => $real_nomor,
             'real_tanggal' => $request->real_tanggal,
             'real_nominal' => $request->real_nominal,
             'real_keterangan' => $request->real_keterangan,
@@ -147,7 +151,7 @@ class RealisasiPengajuanController extends Controller
         if ($cekdata) {
             return new RealisasiPengajuanResource(false, 'Data realisasi tidak bisa dihapus karena sudah dilakukan pertanggung jawaban!', $realisasi);
         }
-        
+
         if ($realisasi) {
             if ($realisasi->pertanggungJawaban()->exists()) {
                 return new RealisasiPengajuanResource(false, 'Tidak Dapat Dihapus Karena Sudah Terdaftar Pada Pertanggung Jawaban!', null);

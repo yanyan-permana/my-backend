@@ -40,7 +40,7 @@ class PengajuanController extends Controller
         $validator = Validator::make($request->all(), [
             'kry_id' => 'required',
             'trx_id' => 'required',
-            'aju_nomor' => 'required|unique:App\Models\Pengajuan,aju_nomor',
+            'aju_nomor' => 'required',
             'aju_tanggal' => 'required',
             'aju_nominal' => 'required',
         ]);
@@ -48,11 +48,15 @@ class PengajuanController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
+        if (Pengajuan::where('aju_nomor', $request->aju_nomor)->exists()) {
+            $aju_nomor = Pengajuan::generateAJUNumber();
+        }
         // input pengajuan
         $pengajuan = Pengajuan::create([
             'kry_id' => $request->kry_id,
             'trx_id' => $request->trx_id,
-            'aju_nomor' => $request->aju_nomor,
+            'aju_nomor' => $aju_nomor,
             'aju_tanggal' => $request->aju_tanggal,
             'aju_nominal' => $request->aju_nominal,
             'aju_keterangan' => $request->aju_keterangan,

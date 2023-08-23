@@ -21,13 +21,14 @@ class RealisasiPengajuan extends Model
 
     public static function generateRealNumber()
     {
-        $latestNumber = static::max('real_nomor');
+        $latestNumber = static::select('real_nomor')
+            ->orderByRaw('CONVERT(SUBSTRING_INDEX(aju_nomor, "REAL", -1), UNSIGNED) DESC')
+            ->first();
 
         if ($latestNumber) {
-            // Ambil angka dari nomor urut terakhir
-            $number = intval(substr($latestNumber, 3)) + 1;
+            $latestNumber = intval(substr($latestNumber->real_nomor, 4));
+            $number = $latestNumber + 1;
         } else {
-            // Jika tidak ada nomor urut sebelumnya, mulai dari 1
             $number = 1;
         }
 
@@ -45,7 +46,7 @@ class RealisasiPengajuan extends Model
     {
         return $this->hasOne(ApprovalPengajuan::class, 'aju_app_id', 'aju_app_id');
     }
-    
+
     public function karyawan()
     {
         return $this->hasOne(Karyawan::class, 'kry_id', 'real_pjbt_id');

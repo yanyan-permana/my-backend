@@ -32,13 +32,13 @@ class Pengajuan extends Model
 
     public static function generateAJUNumber()
     {
-        $latestNumber = static::max('aju_nomor');
-
+        $latestNumber = static::select('aju_nomor')
+            ->orderByRaw('CONVERT(SUBSTRING_INDEX(aju_nomor, "AJU", -1), UNSIGNED) DESC')
+            ->first();
         if ($latestNumber) {
-            // Ambil angka dari nomor urut terakhir
-            $number = intval(substr($latestNumber, 3)) + 1;
+            $latestNumber = intval(substr($latestNumber->aju_nomor, 3));
+            $number = $latestNumber + 1;
         } else {
-            // Jika tidak ada nomor urut sebelumnya, mulai dari 1
             $number = 1;
         }
 

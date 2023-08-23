@@ -38,7 +38,7 @@ class PertanggungJawabanController extends Controller
         // validasi
         $validator = Validator::make($request->all(), [
             'real_id' => 'required',
-            'tgjwb_nomor' => 'required|unique:App\Models\PertanggungJawaban,tgjwb_nomor',
+            'tgjwb_nomor' => 'required',
             'tgjwb_tanggal' => 'required',
             'tgjwb_nominal' => 'required',
             'tgjwb_keterangan' => 'string',
@@ -49,10 +49,14 @@ class PertanggungJawabanController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        if (PertanggungJawaban::where('tgjwb_nomor', $request->tgjwb_nomor)->exists()) {
+            $tgjwb_nomor = PertanggungJawaban::generatePjNumber();
+        }
+
         $pertanggungJawaban = PertanggungJawaban::create([
             'real_id' => $request->real_id,
             'trans_jns' => 'pengeluaran',
-            'tgjwb_nomor' => $request->tgjwb_nomor,
+            'tgjwb_nomor' => $tgjwb_nomor,
             'tgjwb_tanggal' => $request->tgjwb_tanggal,
             'tgjwb_nominal' => $request->tgjwb_nominal,
             'tgjwb_keterangan' => $request->tgjwb_keterangan,
