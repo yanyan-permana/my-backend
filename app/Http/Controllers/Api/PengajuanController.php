@@ -15,7 +15,7 @@ class PengajuanController extends Controller
     use PushNotificationTrait;
     public function index()
     {
-        $pengajuan = Pengajuan::with(['jenisTransaksi', 'karyawan'])->get()
+        $pengajuan = Pengajuan::with(['jenisTransaksi', 'karyawan'])->orderBy('aju_tanggal', 'desc')->get()
             ->map(function ($pengajuan) {
                 return [
                     'aju_id' => $pengajuan->aju_id,
@@ -30,7 +30,7 @@ class PengajuanController extends Controller
                     'created_at' => $pengajuan->created_at,
                     'updated_at' => $pengajuan->updated_at,
                 ];
-            })->sortByDesc('aju_tanggal');
+            });
         return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
     }
 
@@ -90,7 +90,7 @@ class PengajuanController extends Controller
 
     public function getByUseId($id)
     {
-        $pengajuan = Pengajuan::where('kry_id', $id)->with(['jenisTransaksi', 'karyawan'])->get()
+        $pengajuan = Pengajuan::where('kry_id', $id)->with(['jenisTransaksi', 'karyawan'])->orderBy('aju_tanggal', 'desc')->get()
             ->map(function ($pengajuan) {
                 return [
                     'aju_id' => $pengajuan->aju_id,
@@ -105,7 +105,7 @@ class PengajuanController extends Controller
                     'created_at' => $pengajuan->created_at,
                     'updated_at' => $pengajuan->updated_at,
                 ];
-            })->sortByDesc('aju_tanggal');
+            });
         return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
     }
 
