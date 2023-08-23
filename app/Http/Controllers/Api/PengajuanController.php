@@ -63,6 +63,11 @@ class PengajuanController extends Controller
             'aju_nominal' => $request->aju_nominal,
             'aju_keterangan' => $request->aju_keterangan,
         ]);
+
+        $pengajuan->load('karyawan', 'jenisTransaksi');
+        $pengajuan->kry_nama = $pengajuan->karyawan->kry_nama;
+        $pengajuan->trx_nama = $pengajuan->jenisTransaksi->trx_nama;
+
         $customData = [
             'targetScreen' => 'ApprovalVerifikasiDrawer',
             'hak_akses' => 'verifikasi',
@@ -144,6 +149,11 @@ class PengajuanController extends Controller
             'aju_nominal' => $request->aju_nominal,
             'aju_keterangan' => $request->aju_keterangan,
         ]);
+
+        $pengajuan->load('karyawan', 'jenisTransaksi');
+        $pengajuan->kry_nama = $pengajuan->karyawan->kry_nama;
+        $pengajuan->trx_nama = $pengajuan->jenisTransaksi->trx_nama;
+
         return new PengajuanResource(true, 'Data Pengajuan Berhasil Diubah!', $pengajuan);
     }
 
