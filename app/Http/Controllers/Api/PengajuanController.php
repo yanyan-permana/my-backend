@@ -30,7 +30,7 @@ class PengajuanController extends Controller
                     'created_at' => $pengajuan->created_at,
                     'updated_at' => $pengajuan->updated_at,
                 ];
-            })->orderBy('aju_tanggal', 'desc');
+            })->sortByDesc('aju_tanggal');
         return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
     }
 
@@ -105,7 +105,7 @@ class PengajuanController extends Controller
                     'created_at' => $pengajuan->created_at,
                     'updated_at' => $pengajuan->updated_at,
                 ];
-            })->orderBy('aju_tanggal', 'desc');
+            })->sortByDesc('aju_tanggal');
         return new PengajuanResource(true, 'List Data Pengajuan', $pengajuan);
     }
 
