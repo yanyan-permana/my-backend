@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\PenerimaanLangsung;
+use App\Models\Pengajuan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,8 +110,14 @@ class UserController extends Controller
     {
         $user = User::where('usr_id', $id)->first();
         if ($user) {
-            $user->delete();
-            return new UserResource(true, 'Data User Berhasil Dihapus!', null);
+            $isUsedPengajuan = Pengajuan::where('kry_id', $user->kry_id)->exists();
+            $isUsedPenerimaan = PenerimaanLangsung::where('usr_id', $id)->exists();
+            if ($isUsedPengajuan || $isUsedPenerimaan) {
+                return new UserResource(false, 'Data User Tidak bisa dihapus karena sudah terdaftar pada transaksi!', null);
+            } else {
+                $user->delete();
+                return new UserResource(true, 'Data User Berhasil Dihapus!', null);
+            }
         } else {
             return new UserResource(false, 'Data User Tidak Ditemukan!', null);
         }

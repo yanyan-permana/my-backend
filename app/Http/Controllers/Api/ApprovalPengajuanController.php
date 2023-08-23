@@ -30,22 +30,9 @@ class ApprovalPengajuanController extends Controller
     {
         $statusApprove = $request->input('status_approve', '');
 
-        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan'])->orderBy('aju_id', 'desc');
+        $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
         if ($statusApprove === '') {
-            $dataPengajuan->whereDoesntHave('approval', function ($query) {
-                $query->whereNotNull('aju_app_ver_status')
-                    ->WhereNull('aju_app_keu_status')
-                    ->WhereNull('aju_app_dir_status');
-            })
-                ->where(function ($query) {
-                    $query->whereDoesntHave('approval', function ($subquery) {
-                        $subquery->where('is_complete', 'ditolak')
-                            ->orWhere('is_complete', 'selesai');
-                    });
-                })
-                ->orWhere(function ($query) {
-                    $query->whereDoesntHave('approval');
-                });
+            $dataPengajuan->whereDoesntHave('approval')->orderBy('aju_id', 'desc');
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_ver_status', '=', 'disetujui');

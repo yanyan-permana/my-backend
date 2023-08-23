@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RealisasiPengajuanResource;
 use App\Models\ApprovalPengajuan;
+use App\Models\PertanggungJawaban;
 use App\Models\RealisasiPengajuan;
 use App\Traits\PushNotificationTrait;
 use Illuminate\Http\Request;
@@ -119,6 +120,13 @@ class RealisasiPengajuanController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
+        $cekdata = PertanggungJawaban::where("real_id", $id)->first();
+
+        if ($cekdata) {
+            return new RealisasiPengajuanResource(false, 'Data realisasi tidak bisa diubah karena sudah dilakukan pertanggung jawaban!', $realisasi);
+        }
+
         $realisasi->update([
             'aju_app_id' => $request->aju_app_id,
             'real_pjbt_id' => $request->real_pjbt_id,
@@ -134,6 +142,12 @@ class RealisasiPengajuanController extends Controller
     public function destroy($id)
     {
         $realisasi = RealisasiPengajuan::where('real_id', $id)->first();
+        $cekdata = PertanggungJawaban::where("real_id", $id)->first();
+
+        if ($cekdata) {
+            return new RealisasiPengajuanResource(false, 'Data realisasi tidak bisa dihapus karena sudah dilakukan pertanggung jawaban!', $realisasi);
+        }
+        
         if ($realisasi) {
             if ($realisasi->pertanggungJawaban()->exists()) {
                 return new RealisasiPengajuanResource(false, 'Tidak Dapat Dihapus Karena Sudah Terdaftar Pada Pertanggung Jawaban!', null);

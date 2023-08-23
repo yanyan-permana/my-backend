@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PengajuanResource;
+use App\Models\ApprovalPengajuan;
 use App\Models\Pengajuan;
 use App\Traits\PushNotificationTrait;
 use Illuminate\Http\Request;
@@ -122,6 +123,13 @@ class PengajuanController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
+        $cekdata = ApprovalPengajuan::where("aju_id", $pengajuan->aju_id)->first();
+
+        if ($cekdata) {
+            return new PengajuanResource(false, 'Data pengajuan tidak dapat diubah karena sudah dalam proses approval!', $pengajuan);
+        }
+
         $pengajuan->update([
             'kry_id' => $request->kry_id,
             'trx_id' => $request->trx_id,
@@ -136,6 +144,12 @@ class PengajuanController extends Controller
     public function destroy($id)
     {
         $pengajuan = Pengajuan::where('aju_id', $id)->first();
+
+        $cekdata = ApprovalPengajuan::where("aju_id", $id)->first();
+        if ($cekdata) {
+            return new PengajuanResource(false, 'Data pengajuan tidak dapat dihapus karena sudah dalam proses approval!', $pengajuan);
+        }
+
         if ($pengajuan) {
             $pengajuan->delete();
             return new PengajuanResource(true, 'Data Pengajuan Berhasil Dihapus!', null);

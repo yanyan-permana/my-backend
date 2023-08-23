@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class BuktiTransaksi extends Model
 {
@@ -19,4 +20,11 @@ class BuktiTransaksi extends Model
         'bkt_file_ukuran',
         'bkt_file_folder',
     ];
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => asset('/storage/public/uploads/' . $value),
+        );
+    }
 }
