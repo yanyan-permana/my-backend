@@ -63,6 +63,7 @@ class PertanggungJawabanController extends Controller
             'tgjwb_nominal' => $request->tgjwb_nominal,
             'tgjwb_keterangan' => $request->tgjwb_keterangan,
         ]);
+
         $bukti = [];
         if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
@@ -88,6 +89,11 @@ class PertanggungJawabanController extends Controller
                 $bukti = BuktiTransaksi::create($fileData);
             }
         }
+        $pertanggungJawaban->load('realisasi', 'bukti');
+        $pertanggungJawaban->real_nomor = $pertanggungJawaban->realisasi->real_nomor;
+        $pertanggungJawaban->real_nominal = $pertanggungJawaban->realisasi->real_nominal;
+        $pertanggungJawaban->bukti = $pertanggungJawaban->bukti;
+
         return new PertanggungJawabanResource(true, 'Data Realisasi Berhasil Ditambahkan!', ['pertanggung_jawaban' => $pertanggungJawaban, 'bukti' => $bukti]);
     }
 
@@ -165,6 +171,10 @@ class PertanggungJawabanController extends Controller
 
                 $bukti = BuktiTransaksi::create($fileData);
             }
+            $pertanggungJawaban->load('realisasi', 'bukti');
+            $pertanggungJawaban->real_nomor = $pertanggungJawaban->realisasi->real_nomor;
+            $pertanggungJawaban->real_nominal = $pertanggungJawaban->realisasi->real_nominal;
+            $pertanggungJawaban->bukti = $pertanggungJawaban->bukti;
         }
         return new PertanggungJawabanResource(true, 'Data Realisasi Berhasil Diubah!', ['pertanggung_jawaban' => $pertanggungJawaban, 'bukti' => $bukti]);
     }
