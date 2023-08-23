@@ -45,6 +45,7 @@ class LoginController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Login berhasil',
             'user'    => auth()->guard('api')->user(),
             'token'   => $token,
             'token_expired' => $token_expired
