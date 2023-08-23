@@ -22,7 +22,7 @@ class PertanggungJawaban extends Model
     public static function generatePjNumber()
     {
         $latestNumber = static::select('tgjwb_nomor')
-            ->orderByRaw('CONVERT(SUBSTRING_INDEX(aju_nomor, "PJWB", -1), UNSIGNED) DESC')
+            ->orderByRaw('CONVERT(SUBSTRING_INDEX(tgjwb_nomor, "PJWB", -1), UNSIGNED) DESC')
             ->first();
 
         if ($latestNumber) {

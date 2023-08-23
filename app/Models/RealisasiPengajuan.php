@@ -22,7 +22,7 @@ class RealisasiPengajuan extends Model
     public static function generateRealNumber()
     {
         $latestNumber = static::select('real_nomor')
-            ->orderByRaw('CONVERT(SUBSTRING_INDEX(aju_nomor, "REAL", -1), UNSIGNED) DESC')
+            ->orderByRaw('CONVERT(SUBSTRING_INDEX(real_nomor, "REAL", -1), UNSIGNED) DESC')
             ->first();
 
         if ($latestNumber) {
