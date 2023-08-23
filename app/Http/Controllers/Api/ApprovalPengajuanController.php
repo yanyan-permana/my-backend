@@ -32,7 +32,7 @@ class ApprovalPengajuanController extends Controller
 
         $dataPengajuan = Pengajuan::with(['approval', 'jenisTransaksi', 'karyawan']);
         if ($statusApprove === '') {
-            $dataPengajuan->whereDoesntHave('approval')->orderBy('aju_id', 'desc');
+            $dataPengajuan->whereDoesntHave('approval');
         } elseif ($statusApprove === 'disetujui') {
             $dataPengajuan->whereHas('approval', function ($query) {
                 $query->where('aju_app_ver_status', '=', 'disetujui');
@@ -43,7 +43,7 @@ class ApprovalPengajuanController extends Controller
             });
         }
 
-        $dataPengajuan = $dataPengajuan->get();
+        $dataPengajuan = $dataPengajuan->orderBy('aju_tanggal', 'desc')->get();
         if ($dataPengajuan->count() > 0) {
             return new ApprovalPengajuanResource(true, 'List Pengajuan', $dataPengajuan);
         } else {
@@ -67,8 +67,7 @@ class ApprovalPengajuanController extends Controller
             ->whereDoesntHave('approval', function ($query) {
                 $query->where('is_complete', 'ditolak')
                     ->orWhere('is_complete', 'selesai');
-            })
-            ->orderBy('aju_id', 'desc');
+            });
         // ->orWhere(function ($query) {
         //     $query->whereDoesntHave('approval');
         // });
@@ -82,7 +81,7 @@ class ApprovalPengajuanController extends Controller
             });
         }
 
-        $dataPengajuan = $dataPengajuan->get();
+        $dataPengajuan = $dataPengajuan->orderBy('aju_tanggal', 'desc')->get();
         if ($dataPengajuan->count() > 0) {
             return new ApprovalPengajuanResource(true, 'List Pengajuan', $dataPengajuan);
         } else {
@@ -108,8 +107,7 @@ class ApprovalPengajuanController extends Controller
             ->whereDoesntHave('approval', function ($query) {
                 $query->where('is_complete', 'ditolak')
                     ->orWhere('is_complete', 'selesai');
-            })
-            ->orderBy('aju_id', 'desc');
+            });
         // ->orWhere(function ($query) {
         //     $query->whereDoesntHave('approval');
         // });
@@ -123,7 +121,7 @@ class ApprovalPengajuanController extends Controller
             });
         }
 
-        $dataPengajuan = $dataPengajuan->get();
+        $dataPengajuan = $dataPengajuan->orderBy('aju_tanggal', 'desc')->get();
 
         if ($dataPengajuan->count() > 0) {
             return new ApprovalPengajuanResource(true, 'List Pengajuan', $dataPengajuan);
