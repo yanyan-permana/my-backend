@@ -60,7 +60,7 @@ class PenerimaanLangsungController extends Controller
             'tpl_nominal' => $request->tpl_nominal,
             'tpl_keterangan' => $request->tpl_keterangan,
         ]);
-        
+
         $bukti = [];
         if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
@@ -86,6 +86,10 @@ class PenerimaanLangsungController extends Controller
                 $bukti = BuktiTransaksi::create($fileData);
             }
         }
+        $penerimaanLangsung->load('user', 'jenisTransaksi', 'bukti');
+        $penerimaanLangsung->usr_login = $penerimaanLangsung->user->usr_login;
+        $penerimaanLangsung->trx_nama = $penerimaanLangsung->jenisTransaksi->trx_nama;
+        $penerimaanLangsung->bukti = $penerimaanLangsung->bukti;
         return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Ditambahkan!', ['penerimaan' => $penerimaanLangsung, 'bukti' => $bukti]);
     }
 
@@ -162,6 +166,10 @@ class PenerimaanLangsungController extends Controller
                 $bukti = BuktiTransaksi::create($fileData);
             }
         }
+        $penerimaanLangsung->load('user', 'jenisTransaksi', 'bukti');
+        $penerimaanLangsung->usr_login = $penerimaanLangsung->user->usr_login;
+        $penerimaanLangsung->trx_nama = $penerimaanLangsung->jenisTransaksi->trx_nama;
+        $penerimaanLangsung->bukti = $penerimaanLangsung->bukti;
         return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Diubah!', ['penerimaan' => $penerimaanLangsung, 'bukti' => $bukti]);
     }
 

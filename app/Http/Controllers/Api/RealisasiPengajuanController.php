@@ -68,6 +68,10 @@ class RealisasiPengajuanController extends Controller
             'real_nominal' => $request->real_nominal,
             'real_keterangan' => $request->real_keterangan,
         ]);
+        $realisasi->load('karyawan', 'approval.pengajuan.jenisTransaksi');
+        $realisasi->aju_nomor = $realisasi->approval->pengajuan->aju_nomor;
+        $realisasi->aju_nominal = $realisasi->approval->pengajuan->aju_nominal;
+        $realisasi->trx_nama = $realisasi->approval->pengajuan->jenisTransaksi->trx_nama;
 
         if ($realisasi) {
             $data = ApprovalPengajuan::where('aju_app_id', $realisasi->aju_app_id)->with('pengajuan')->first();
@@ -141,6 +145,11 @@ class RealisasiPengajuanController extends Controller
             'real_nominal' => $request->real_nominal,
             'real_keterangan' => $request->real_keterangan,
         ]);
+
+        $realisasi->load('karyawan', 'approval.pengajuan.jenisTransaksi');
+        $realisasi->aju_nomor = $realisasi->approval->pengajuan->aju_nomor;
+        $realisasi->aju_nominal = $realisasi->approval->pengajuan->aju_nominal;
+        $realisasi->trx_nama = $realisasi->approval->pengajuan->jenisTransaksi->trx_nama;
 
         return new RealisasiPengajuanResource(true, 'Data Realisasi Berhasil Diubah!', $realisasi);
     }
