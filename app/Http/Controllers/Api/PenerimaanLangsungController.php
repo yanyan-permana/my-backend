@@ -28,6 +28,7 @@ class PenerimaanLangsungController extends Controller
                     'updated_at' => $penerimaanLangsung->updated_at,
                     'usr_login' => $penerimaanLangsung->user->usr_login,
                     'trx_nama' => $penerimaanLangsung->jenisTransaksi->trx_nama,
+                    'trx_id' => $penerimaanLangsung->jenisTransaksi->trx_id,
                     'bukti' => $penerimaanLangsung->bukti,
                 ];
             });
@@ -108,6 +109,7 @@ class PenerimaanLangsungController extends Controller
                 'created_at' => $penerimaanLangsung->created_at,
                 'updated_at' => $penerimaanLangsung->updated_at,
                 'usr_login' => $penerimaanLangsung->user->usr_login,
+                'trx_id' => $penerimaanLangsung->jenisTransaksi->trx_id,
                 'trx_nama' => $penerimaanLangsung->jenisTransaksi->trx_nama,
                 'bukti' => $penerimaanLangsung->bukti,
             ];
