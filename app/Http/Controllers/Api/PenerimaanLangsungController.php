@@ -156,7 +156,7 @@ class PenerimaanLangsungController extends Controller
                 $fileSizeInBytes = filesize($filePath);
 
                 $fileData = [
-                    'trans_id' => $penerimaanLangsung->tgjwb_id,
+                    'trans_id' => $penerimaanLangsung->tpl_id,
                     'trans_jns' => 'penerimaan',
                     'bkt_file_nama' => $filename,
                     'bkt_mime_tipe' =>  $uploadedFile->getClientMimeType(),
@@ -186,7 +186,7 @@ class PenerimaanLangsungController extends Controller
                 unlink($filePath);
                 Storage::delete($file->bkt_file_folder);
             }
-            BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tgjwb_id, 'trans_jns' => $penerimaanLangsung->trans_jns])->delete();
+            BuktiTransaksi::where(['trans_id' => $penerimaanLangsung->tpl_id, 'trans_jns' => $penerimaanLangsung->trans_jns])->delete();
             return new PenerimaanLangsungResource(true, 'Data Penerimaan Langsung Berhasil Dihapus!', null);
         } else {
             return new PenerimaanLangsungResource(false, 'Data Penerimaan Langsung Tidak Ditemukan!', null);
