@@ -29,6 +29,7 @@ class UserController extends Controller
                 'usr_email' => $row->usr_email,
                 'usr_hak_akses' => $row->usr_hak_akses,
                 'usr_password' => $row->usr_password,
+                'status' => $row->status,
                 'created_at' => $row->created_at,
                 'updated_at' => $row->updated_at,
                 'kry_nama' => $row->karyawan->kry_nama,
@@ -48,6 +49,7 @@ class UserController extends Controller
             'usr_email' => 'required',
             'usr_hak_akses' => 'required',
             'usr_password' => 'required',
+            'status' => 'required|in:active,inactive',
         ]);
         // jika validasi gagal
         if ($validator->fails()) {
@@ -60,6 +62,7 @@ class UserController extends Controller
             'usr_email' => $request->usr_email,
             'usr_hak_akses' => $request->usr_hak_akses,
             'usr_password' => Hash::make($request->usr_password),
+            'status' => $request->status,
         ]);
         return new UserResource(true, 'Data User Berhasil Ditambahkan!', $user);
     }
@@ -82,6 +85,8 @@ class UserController extends Controller
                 'kry_id' => 'required',
                 'usr_login' => 'required',
                 'usr_email' => 'required',
+                'usr_email' => 'required',
+                'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
             ]);
         } else {
@@ -89,6 +94,7 @@ class UserController extends Controller
                 'kry_id' => 'required',
                 'usr_login' => 'required|unique:m_user',
                 'usr_hak_akses' => 'required',
+                'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
             ]);
         }
@@ -103,6 +109,7 @@ class UserController extends Controller
                 'usr_email' => $request->usr_email,
                 'usr_hak_akses' => $request->usr_hak_akses,
                 'usr_password' => Hash::make($request->usr_password),
+                'status' => $request->status,
             ]);
         } else {
             $user->update([
@@ -110,6 +117,7 @@ class UserController extends Controller
                 'usr_login' => $request->usr_login,
                 'usr_email' => $request->usr_email,
                 'usr_hak_akses' => $request->usr_hak_akses,
+                'status' => $request->status,
             ]);
         }
 
