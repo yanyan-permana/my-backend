@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -27,28 +28,36 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $credentials = $request->only('usr_login', 'usr_password');
-        $credentials = [
-            'usr_login' => $credentials['usr_login'],
-            'password' => $credentials['usr_password'],
-        ];
-        // jika autentikasi gagal
-        if (!$token = auth()->guard('api')->attempt($credentials)) {
+        $cekstatus = User::where('usr_login', $request->input('usr_login'))->first();
+        if ($cekstatus->status === 'active') {
+            $credentials = $request->only('usr_login', 'usr_password');
+            $credentials = [
+                'usr_login' => $credentials['usr_login'],
+                'password' => $credentials['usr_password'],
+            ];
+            // jika autentikasi gagal
+            if (!$token = auth()->guard('api')->attempt($credentials)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User login atau User password Anda salah'
+                ], 401);
+            }
+
+            // Tampilkan waktu sebulan mendatang untuk masa expired token
+            $token_expired = Carbon::now()->addMonth()->format('Y-m-d');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Login berhasil',
+                'user'    => auth()->guard('api')->user(),
+                'token'   => $token,
+                'token_expired' => $token_expired
+            ], 200);
+        } else {
             return response()->json([
                 'success' => false,
-                'message' => 'User login atau User password Anda salah'
+                'message' => 'User tidak aktif'
             ], 401);
         }
-
-        // Tampilkan waktu sebulan mendatang untuk masa expired token
-        $token_expired = Carbon::now()->addMonth()->format('Y-m-d');
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Login berhasil',
-            'user'    => auth()->guard('api')->user(),
-            'token'   => $token,
-            'token_expired' => $token_expired
-        ], 200);
     }
 }
