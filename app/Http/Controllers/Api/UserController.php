@@ -64,6 +64,8 @@ class UserController extends Controller
             'usr_password' => Hash::make($request->usr_password),
             'status' => $request->status,
         ]);
+        $user->load('karyawan');
+        $user->kry_nama = $user->karyawan->kry_nama;
         return new UserResource(true, 'Data User Berhasil Ditambahkan!', $user);
     }
 
@@ -111,6 +113,8 @@ class UserController extends Controller
                 'usr_password' => Hash::make($request->usr_password),
                 'status' => $request->status,
             ]);
+            $user->load('karyawan');
+            $user->kry_nama = $user->karyawan->kry_nama;
         } else {
             $user->update([
                 'kry_id' => $request->kry_id,
@@ -119,6 +123,8 @@ class UserController extends Controller
                 'usr_hak_akses' => $request->usr_hak_akses,
                 'status' => $request->status,
             ]);
+            $user->load('karyawan');
+            $user->kry_nama = $user->karyawan->kry_nama;
         }
 
         return new UserResource(true, 'Data User Berhasil Diubah!', $user);
