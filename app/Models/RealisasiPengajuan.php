@@ -11,6 +11,7 @@ class RealisasiPengajuan extends Model
     protected $table = 't_realisasi_pengajuan';
     protected $primaryKey = 'real_id';
     protected $fillable = [
+        '$id',
         'aju_app_id',
         'real_nomor',
         'real_tanggal',

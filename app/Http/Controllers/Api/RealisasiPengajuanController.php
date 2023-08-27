@@ -89,25 +89,23 @@ class RealisasiPengajuanController extends Controller
 
     public function show($id)
     {
-        $realisasi = RealisasiPengajuan::where('real_id', $id)->with(['karyawan', 'approval.pengajuan.jenisTransaksi'])->first()
-            ->map(function ($realisasi) {
-                return [
-                    'real_id' => $realisasi->real_id,
-                    'aju_app_id' => $realisasi->aju_app_id,
-                    'real_nomor' => $realisasi->real_nomor,
-                    'real_tanggal' => $realisasi->real_tanggal,
-                    'real_nominal' => $realisasi->real_nominal,
-                    'real_keterangan' => $realisasi->real_keterangan,
-                    'real_pjbt_id' => $realisasi->real_pjbt_id,
-                    'aju_nomor' => $realisasi->approval->pengajuan->aju_nomor,
-                    'aju_nominal' => $realisasi->approval->pengajuan->aju_nominal,
-                    'kry_nama' => $realisasi->karyawan->kry_nama,
-                    'trx_nama' => $realisasi->approval->pengajuan->jenisTransaksi->trx_nama,
-                    'created_at' => $realisasi->created_at,
-                    'updated_at' => $realisasi->updated_at,
-                ];
-            });
+        $realisasi = RealisasiPengajuan::where('real_id', $id)->with(['karyawan', 'approval.pengajuan.jenisTransaksi'])->first();
         if ($realisasi) {
+            $realisasi = [
+                'real_id' => $realisasi->real_id,
+                'aju_app_id' => $realisasi->aju_app_id,
+                'real_nomor' => $realisasi->real_nomor,
+                'real_tanggal' => $realisasi->real_tanggal,
+                'real_nominal' => $realisasi->real_nominal,
+                'real_keterangan' => $realisasi->real_keterangan,
+                'real_pjbt_id' => $realisasi->real_pjbt_id,
+                'aju_nomor' => $realisasi->approval->pengajuan->aju_nomor,
+                'aju_nominal' => $realisasi->approval->pengajuan->aju_nominal,
+                'kry_nama' => $realisasi->karyawan->kry_nama,
+                'trx_nama' => $realisasi->approval->pengajuan->jenisTransaksi->trx_nama,
+                'created_at' => $realisasi->created_at,
+                'updated_at' => $realisasi->updated_at,
+            ];
             return new RealisasiPengajuanResource(true, 'Data realisasi Ditemukan!', $realisasi);
         } else {
             return new RealisasiPengajuanResource(false, 'Data realisasi Tidak Ditemukan!', null);
