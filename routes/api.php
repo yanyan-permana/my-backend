@@ -42,7 +42,7 @@ Route::post('/login', LoginController::class)->name('login');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'cors.api'])->group(function () {
     Route::apiResource('/karyawan', KaryawanController::class);
     Route::get('/total-karyawan', [KaryawanController::class, 'getTotalKaryawan']);
     Route::apiResource('/user', UserController::class);

@@ -17,16 +17,14 @@ class AddCorsHeaders
     public function handle(Request $request, Closure $next)
     {
         // if (strpos($request->url(), '/public/uploads/') !== false) {
-        /*  $response = $next($request);
+        $response = $next($request);
 
         $response->header('Access-Control-Allow-Origin', '*'); // Ganti dengan domain yang sesuai
         $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $response->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        $response->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 
-        return $response; */
+        return $response;
         // }
-        return $next($request)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        // return $next($request);
     }
 }
