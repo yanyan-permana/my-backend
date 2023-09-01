@@ -355,10 +355,10 @@ class ApprovalPengajuanController extends Controller
                 }
 
                 $approval->aju_id = $ajuId;
-                $approval->aju_app_keu_tanggal = Carbon::now();
-                $approval->aju_app_keu_jbt_id = $pejabatApp->pjbt_id;
-                $approval->aju_app_keu_status = $approveStatus;
-                $approval->aju_app_keu_keterangan = $approveKeterangan;
+                $approval->aju_app_dir_tanggal = Carbon::now();
+                $approval->aju_app_dir_jbt_id = $pejabatApp->pjbt_id;
+                $approval->aju_app_dir_status = $approveStatus;
+                $approval->aju_app_dir_keterangan = $approveKeterangan;
                 $approval->is_complete = $approveStatus === 'disetujui' ? "selesai" : "ditolak";
                 $approval->save();
 
