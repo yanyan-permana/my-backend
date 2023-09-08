@@ -79,16 +79,14 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user, $id)
     {
         // validasi
-        if ($user->kry_id === $request->kry_id) {
+        if ($user->usr_id === $id) {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
                 'usr_login' => 'required',
                 'usr_email' => 'required',
-                // 'status' => 'required|in:active,inactive',
-                // 'usr_password' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
