@@ -28,20 +28,22 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
+        $credentials = $request->only('usr_login', 'usr_password');
+        $credentials = [
+            'usr_login' => $credentials['usr_login'],
+            'password' => $credentials['usr_password'],
+        ];
+        // jika autentikasi gagal
+        if (!$token = auth()->guard('api')->attempt($credentials)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User login atau User password Anda salah'
+            ], 401);
+        }
+
         $cekstatus = User::where('usr_login', $request->input('usr_login'))->first();
         if ($cekstatus->status === 'active') {
-            $credentials = $request->only('usr_login', 'usr_password');
-            $credentials = [
-                'usr_login' => $credentials['usr_login'],
-                'password' => $credentials['usr_password'],
-            ];
-            // jika autentikasi gagal
-            if (!$token = auth()->guard('api')->attempt($credentials)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User login atau User password Anda salah'
-                ], 401);
-            }
 
             // Tampilkan waktu sebulan mendatang untuk masa expired token
             $token_expired = Carbon::now()->addMonth()->format('Y-m-d');
