@@ -103,8 +103,8 @@ class UserController extends Controller
         // }
         $validator = Validator::make($request->all(), [
             'kry_id' => 'required',
-            'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($id),
-            'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($id),
+            'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($id, 'usr_id'),
+            'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($id, 'usr_id'),
             // 'status' => 'required|in:active,inactive',
             // 'usr_password' => 'required',
         ]);
