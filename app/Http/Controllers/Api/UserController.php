@@ -105,7 +105,8 @@ class UserController extends Controller
             'kry_id' => 'required',
             'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($id, 'usr_id'),
             'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($id, 'usr_id'),
-            // 'status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
+            'usr_hak_akses' => 'required',
             // 'usr_password' => 'required',
         ]);
         // jika validasi gagal
