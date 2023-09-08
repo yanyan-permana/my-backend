@@ -87,8 +87,7 @@ class UserController extends Controller
                 'kry_id' => 'required',
                 'usr_login' => 'required',
                 'usr_email' => 'required',
-                'usr_email' => 'required',
-                'status' => 'required|in:active,inactive',
+                // 'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
             ]);
         } else {
