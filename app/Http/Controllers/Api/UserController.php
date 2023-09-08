@@ -45,8 +45,8 @@ class UserController extends Controller
         // validasi
         $validator = Validator::make($request->all(), [
             'kry_id' => 'required',
-            'usr_login' => 'required|unique:m_user',
-            'usr_email' => 'required',
+            'usr_login' => 'required|unique:m_user,usr_login',
+            'usr_email' => 'required|unique:m_user,usr_email',
             'usr_hak_akses' => 'required',
             'usr_password' => 'required',
             'status' => 'required|in:active,inactive',
@@ -82,11 +82,10 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         // validasi
-        if ($user->kry_nik === $request->kry_nik) {
+        if ($user->usr_email === $request->usr_email && $user->usr_login === $request->usr_login) {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
                 'usr_login' => 'required',
-                'usr_email' => 'required',
                 'usr_email' => 'required',
                 'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
