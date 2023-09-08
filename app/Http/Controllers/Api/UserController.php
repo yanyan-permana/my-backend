@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -86,16 +85,16 @@ class UserController extends Controller
         if ($user->kry_id === $request->kry_id) {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
-                'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($request->kry_id),
-                'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($request->kry_id),
+                'usr_login' => 'required',
+                'usr_email' => 'required',
                 // 'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
-                'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($request->kry_id),
-                'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($request->kry_id),
+                'usr_login' => 'required',
+                'usr_email' => 'required',
                 'usr_hak_akses' => 'required',
                 'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
