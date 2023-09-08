@@ -86,16 +86,16 @@ class UserController extends Controller
         if ($user->kry_id === $request->kry_id) {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
-                'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($user->usr_id),
-                'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($user->usr_id),
+                'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($request->kry_id),
+                'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($request->kry_id),
                 // 'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
-                'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($user->usr_id),
-                'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($user->usr_id),
+                'usr_login' => 'required|' . Rule::unique(User::class, 'usr_login')->ignore($request->kry_id),
+                'usr_email' => 'required|' . Rule::unique(User::class, 'usr_email')->ignore($request->kry_id),
                 'usr_hak_akses' => 'required',
                 'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
