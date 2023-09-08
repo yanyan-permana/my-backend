@@ -79,19 +79,22 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, User $user, $id)
+    public function update(Request $request, User $user)
     {
         // validasi
-        if ($user->usr_id === $id) {
+        if ($user->kry_id === $request->kry_id) {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
-                'usr_login' => 'required',
-                'usr_email' => 'required',
+                'usr_login' => 'required|unique:m_user,usr_login',
+                'usr_email' => 'required|unique:m_user,usr_email',
+                // 'status' => 'required|in:active,inactive',
+                // 'usr_password' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
                 'kry_id' => 'required',
-                'usr_login' => 'required|unique:m_user',
+                'usr_login' => 'required|unique:m_user,usr_login',
+                'usr_email' => 'required|unique:m_user,usr_email',
                 'usr_hak_akses' => 'required',
                 'status' => 'required|in:active,inactive',
                 // 'usr_password' => 'required',
